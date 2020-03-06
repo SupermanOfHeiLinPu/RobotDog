@@ -1,0 +1,98 @@
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\ccmfUDxd.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"printf_redefine.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text._write,"ax",%progbits
+  17              		.align	1
+  18              		.global	_write
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-d16
+  25              	_write:
+  26              	.LVL0:
+  27              	.LFB141:
+  28              		.file 1 "task/printf_redefine/printf_redefine.c"
+   1:task/printf_redefine/printf_redefine.c **** #include "usart.h"
+   2:task/printf_redefine/printf_redefine.c **** #include "stm32f7xx.h"
+   3:task/printf_redefine/printf_redefine.c **** 
+   4:task/printf_redefine/printf_redefine.c **** int _write(int fd, char *pBuffer, int size)
+   5:task/printf_redefine/printf_redefine.c **** {
+  29              		.loc 1 5 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 5 1 is_stmt 0 view .LVU1
+  34 0000 10B5     		push	{r4, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 4, -8
+  38              		.cfi_offset 14, -4
+  39 0002 1446     		mov	r4, r2
+   6:task/printf_redefine/printf_redefine.c ****     HAL_UART_Transmit(&huart5, pBuffer, size, 1000);
+  40              		.loc 1 6 5 is_stmt 1 view .LVU2
+  41 0004 4FF47A73 		mov	r3, #1000
+  42 0008 92B2     		uxth	r2, r2
+  43              	.LVL1:
+  44              		.loc 1 6 5 is_stmt 0 view .LVU3
+  45 000a 0248     		ldr	r0, .L3
+  46              	.LVL2:
+  47              		.loc 1 6 5 view .LVU4
+  48 000c FFF7FEFF 		bl	HAL_UART_Transmit
+  49              	.LVL3:
+   7:task/printf_redefine/printf_redefine.c ****     return size;
+  50              		.loc 1 7 5 is_stmt 1 view .LVU5
+   8:task/printf_redefine/printf_redefine.c **** }...
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\ccmfUDxd.s 			page 2
+
+
+  51              		.loc 1 8 1 is_stmt 0 view .LVU6
+  52 0010 2046     		mov	r0, r4
+  53 0012 10BD     		pop	{r4, pc}
+  54              	.LVL4:
+  55              	.L4:
+  56              		.loc 1 8 1 view .LVU7
+  57              		.align	2
+  58              	.L3:
+  59 0014 00000000 		.word	huart5
+  60              		.cfi_endproc
+  61              	.LFE141:
+  63              		.text
+  64              	.Letext0:
+  65              		.file 2 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\arm-none-eabi\\include\\machine\\_def
+  66              		.file 3 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.
+  67              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+  68              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+  69              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h"
+  70              		.file 7 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h"
+  71              		.file 8 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h"
+  72              		.file 9 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h"
+  73              		.file 10 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h"
+  74              		.file 11 "Inc/usart.h"
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\ccmfUDxd.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 printf_redefine.c
+C:\Users\Legend\AppData\Local\Temp\ccmfUDxd.s:17     .text._write:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\ccmfUDxd.s:25     .text._write:00000000 _write
+C:\Users\Legend\AppData\Local\Temp\ccmfUDxd.s:59     .text._write:00000014 $d
+
+UNDEFINED SYMBOLS
+HAL_UART_Transmit
+huart5

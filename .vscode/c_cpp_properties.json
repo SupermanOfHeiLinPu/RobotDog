@@ -1,0 +1,122 @@
+{
+    "env": {
+        "____________________USER_FIELDS_CAN_BE_MODIFIED____________________": "",
+        "user_cSources": [
+            "task/attitude/src/bsp_i2c.c",
+            "task/attitude/eMPL/inv_mpu_dmp_motion_driver.c",
+            "task/attitude/eMPL/inv_mpu.c",
+            "task/attitude/src/mpu6050.c",
+            "task/attitude/src/attitude.c",
+            "task/attitude/src/attitude_task.c",
+            "task/printf_redefine/printf_redefine.c"
+        ],
+        "user_asmSources": [],
+        "user_ldSources": [],
+        "user_cIncludes": [
+            "task/attitude/eMPL",
+            "task/attitude/inc"
+        ],
+        "user_asmIncludes": [],
+        "user_ldIncludes": [],
+        "user_cDefines": [],
+        "user_asmDefines": [],
+        "user_cFlags": [],
+        "user_asmFlags": [],
+        "user_ldFlags": [
+            "-u _printf_float"
+        ],
+        "____________________DO_NOT_MODIFY_FIELDS_BELOW____________________": "",
+        "cubemx_sourceFiles": [
+            "Src/main.c",
+            "Src/gpio.c",
+            "Src/freertos.c",
+            "Src/i2c.c",
+            "Src/usart.c",
+            "Src/stm32f7xx_it.c",
+            "Src/stm32f7xx_hal_msp.c",
+            "Src/stm32f7xx_hal_timebase_tim.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma_ex.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr_ex.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c",
+            "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c",
+            "Src/system_stm32f7xx.c",
+            "Middlewares/Third_Party/FreeRTOS/Source/croutine.c",
+            "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c",
+            "Middlewares/Third_Party/FreeRTOS/Source/list.c",
+            "Middlewares/Third_Party/FreeRTOS/Source/queue.c",
+            "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c",
+            "Middlewares/Third_Party/FreeRTOS/Source/tasks.c",
+            "Middlewares/Third_Party/FreeRTOS/Source/timers.c",
+            "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c",
+            "Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c",
+            "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/port.c",
+            "startup_stm32f767xx.s"
+        ],
+        "cubemx_includes": [
+            "Inc",
+            "Drivers/STM32F7xx_HAL_Driver/Inc",
+            "Drivers/STM32F7xx_HAL_Driver/Inc/Legacy",
+            "Middlewares/Third_Party/FreeRTOS/Source/include",
+            "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2",
+            "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1",
+            "Drivers/CMSIS/Device/ST/STM32F7xx/Include",
+            "Drivers/CMSIS/Include",
+            "Drivers/CMSIS/Include"
+        ],
+        "cubemx_defines": [
+            "USE_HAL_DRIVER",
+            "STM32F767xx"
+        ],
+        "gccExePath": "F:\\Prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\bin\\arm-none-eabi-gcc.EXE",
+        "gccIncludePath": "F:/Prosoft/gcc_arm_none/2019q4/9 2019-q4-major/lib/gcc/arm-none-eabi/9.2.1/include"
+    },
+    "configurations": [
+        {
+            "name": "dog",
+            "intelliSenseMode": "msvc-x64",
+            "includePath": [
+                "${workspaceFolder}",
+                "${cubemx_includes}",
+                "${gccIncludePath}",
+                "${user_cIncludes}",
+                "${user_asmIncludes}",
+                "${user_ldIncludes}"
+            ],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "${cubemx_includes}",
+                    "${gccIncludePath}",
+                    "${user_cIncludes}",
+                    "${user_asmIncludes}",
+                    "${user_ldIncludes}"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "defines": [
+                "${cubemx_defines}",
+                "${user_cDefines}",
+                "${user_asmDefines}"
+            ],
+            "forcedInclude": [],
+            "compilerPath": "${gccExePath}",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

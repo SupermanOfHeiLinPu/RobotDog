@@ -1,0 +1,349 @@
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"attitude_task.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.rodata.AttitudeTsak.str1.4,"aMS",%progbits,1
+  17              		.align	2
+  18              	.LC0:
+  19 0000 70697463 		.ascii	"pitch:%lf\012\000"
+  19      683A256C 
+  19      660A00
+  20 000b 00       		.align	2
+  21              	.LC1:
+  22 000c 7961773A 		.ascii	"yaw:%lf\012\000"
+  22      256C660A 
+  22      00
+  23 0015 000000   		.align	2
+  24              	.LC2:
+  25 0018 726F6C6C 		.ascii	"roll:%lf\012\012\012\012\012\012\012\012\012\012\012"
+  25      3A256C66 
+  25      0A0A0A0A 
+  25      0A0A0A0A 
+  25      0A0A0A
+  26 002b 0A00     		.ascii	"\012\000"
+  27              		.section	.text.AttitudeTsak,"ax",%progbits
+  28              		.align	1
+  29              		.arch armv7e-m
+  30              		.syntax unified
+  31              		.thumb
+  32              		.thumb_func
+  33              		.fpu fpv5-d16
+  35              	AttitudeTsak:
+  36              	.LFB148:
+  37              		.file 1 "task/attitude/src/attitude_task.c"
+   1:task/attitude/src/attitude_task.c **** #include "attitude_task.h"
+   2:task/attitude/src/attitude_task.c **** //姿态任务句柄
+   3:task/attitude/src/attitude_task.c **** TaskHandle_t AttitudeTaskHandle;
+   4:task/attitude/src/attitude_task.c **** //姿态消息队列
+   5:task/attitude/src/attitude_task.c **** QueueHandle_t AttitudeQueue = NULL;
+   6:task/attitude/src/attitude_task.c **** 
+   7:task/attitude/src/attitude_task.c **** //姿态任务
+   8:task/attitude/src/attitude_task.c **** static void AttitudeTsak()
+   9:task/attitude/src/attitude_task.c **** {
+  38              		.loc 1 9 1 view -0
+  39              		.cfi_startproc
+  40              		@ args = 0, pretend = 0, frame = 8
+  41              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s 			page 2
+
+
+  42 0000 00B5     		push	{lr}
+  43              	.LCFI0:
+  44              		.cfi_def_cfa_offset 4
+  45              		.cfi_offset 14, -4
+  46 0002 83B0     		sub	sp, sp, #12
+  47              	.LCFI1:
+  48              		.cfi_def_cfa_offset 16
+  10:task/attitude/src/attitude_task.c ****     int isReady;
+  49              		.loc 1 10 5 view .LVU1
+  11:task/attitude/src/attitude_task.c ****     attitude *attitude_self;
+  50              		.loc 1 11 5 view .LVU2
+  12:task/attitude/src/attitude_task.c ****     attitude_self = attitude_self_Creat();
+  51              		.loc 1 12 5 view .LVU3
+  52              		.loc 1 12 21 is_stmt 0 view .LVU4
+  53 0004 FFF7FEFF 		bl	attitude_self_Creat
+  54              	.LVL0:
+  55              		.loc 1 12 19 view .LVU5
+  56 0008 0190     		str	r0, [sp, #4]
+  13:task/attitude/src/attitude_task.c ****     attitude_self->mpu6050self->mpuFunList->Init(attitude_self->mpu6050self);
+  57              		.loc 1 13 5 is_stmt 1 view .LVU6
+  58              		.loc 1 13 18 is_stmt 0 view .LVU7
+  59 000a 0068     		ldr	r0, [r0]
+  60              		.loc 1 13 31 view .LVU8
+  61 000c 0368     		ldr	r3, [r0]
+  62              		.loc 1 13 43 view .LVU9
+  63 000e 1B68     		ldr	r3, [r3]
+  64              		.loc 1 13 5 view .LVU10
+  65 0010 9847     		blx	r3
+  66              	.LVL1:
+  67 0012 18E0     		b	.L2
+  68              	.LVL2:
+  69              	.L5:
+  14:task/attitude/src/attitude_task.c ****     while (1)
+  15:task/attitude/src/attitude_task.c ****     {
+  16:task/attitude/src/attitude_task.c ****         isReady = attitude_self->FunList->bulid_euler_angles(attitude_self);
+  17:task/attitude/src/attitude_task.c ****         if (!isReady)
+  18:task/attitude/src/attitude_task.c ****         {
+  19:task/attitude/src/attitude_task.c ****             xQueueOverwrite(AttitudeQueue, &attitude_self);
+  70              		.loc 1 19 13 is_stmt 1 view .LVU11
+  71 0014 0223     		movs	r3, #2
+  72 0016 0022     		movs	r2, #0
+  73 0018 01A9     		add	r1, sp, #4
+  74 001a 0E48     		ldr	r0, .L6
+  75              	.LVL3:
+  76              		.loc 1 19 13 is_stmt 0 view .LVU12
+  77 001c 0068     		ldr	r0, [r0]
+  78 001e FFF7FEFF 		bl	xQueueGenericSend
+  79              	.LVL4:
+  20:task/attitude/src/attitude_task.c ****             printf("pitch:%lf\n", attitude_self->pitch);
+  80              		.loc 1 20 13 is_stmt 1 view .LVU13
+  81 0022 019B     		ldr	r3, [sp, #4]
+  82 0024 D3E90223 		ldrd	r2, [r3, #8]
+  83 0028 0B48     		ldr	r0, .L6+4
+  84 002a FFF7FEFF 		bl	printf
+  85              	.LVL5:
+  21:task/attitude/src/attitude_task.c ****             printf("yaw:%lf\n", attitude_self->yaw);
+  86              		.loc 1 21 13 view .LVU14
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s 			page 3
+
+
+  87 002e 019B     		ldr	r3, [sp, #4]
+  88 0030 D3E90623 		ldrd	r2, [r3, #24]
+  89 0034 0948     		ldr	r0, .L6+8
+  90 0036 FFF7FEFF 		bl	printf
+  91              	.LVL6:
+  22:task/attitude/src/attitude_task.c ****             printf("roll:%lf\n\n\n\n\n\n\n\n\n\n\n\n", attitude_self->roll);
+  92              		.loc 1 22 13 view .LVU15
+  93 003a 019B     		ldr	r3, [sp, #4]
+  94 003c D3E90423 		ldrd	r2, [r3, #16]
+  95 0040 0748     		ldr	r0, .L6+12
+  96 0042 FFF7FEFF 		bl	printf
+  97              	.LVL7:
+  98              	.L2:
+  14:task/attitude/src/attitude_task.c ****     {
+  99              		.loc 1 14 5 view .LVU16
+  16:task/attitude/src/attitude_task.c ****         if (!isReady)
+ 100              		.loc 1 16 9 view .LVU17
+  16:task/attitude/src/attitude_task.c ****         if (!isReady)
+ 101              		.loc 1 16 32 is_stmt 0 view .LVU18
+ 102 0046 0198     		ldr	r0, [sp, #4]
+ 103 0048 4368     		ldr	r3, [r0, #4]
+  16:task/attitude/src/attitude_task.c ****         if (!isReady)
+ 104              		.loc 1 16 41 view .LVU19
+ 105 004a 1B68     		ldr	r3, [r3]
+  16:task/attitude/src/attitude_task.c ****         if (!isReady)
+ 106              		.loc 1 16 19 view .LVU20
+ 107 004c 9847     		blx	r3
+ 108              	.LVL8:
+  17:task/attitude/src/attitude_task.c ****         {
+ 109              		.loc 1 17 9 is_stmt 1 view .LVU21
+  17:task/attitude/src/attitude_task.c ****         {
+ 110              		.loc 1 17 12 is_stmt 0 view .LVU22
+ 111 004e 0028     		cmp	r0, #0
+ 112 0050 F9D1     		bne	.L2
+ 113 0052 DFE7     		b	.L5
+ 114              	.L7:
+ 115              		.align	2
+ 116              	.L6:
+ 117 0054 00000000 		.word	.LANCHOR0
+ 118 0058 00000000 		.word	.LC0
+ 119 005c 0C000000 		.word	.LC1
+ 120 0060 18000000 		.word	.LC2
+ 121              		.cfi_endproc
+ 122              	.LFE148:
+ 124              		.section	.rodata.xAttitudeTsakCreat.str1.4,"aMS",%progbits,1
+ 125              		.align	2
+ 126              	.LC3:
+ 127 0000 41747469 		.ascii	"AttitudeTsak\000"
+ 127      74756465 
+ 127      5473616B 
+ 127      00
+ 128              		.section	.text.xAttitudeTsakCreat,"ax",%progbits
+ 129              		.align	1
+ 130              		.global	xAttitudeTsakCreat
+ 131              		.syntax unified
+ 132              		.thumb
+ 133              		.thumb_func
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s 			page 4
+
+
+ 134              		.fpu fpv5-d16
+ 136              	xAttitudeTsakCreat:
+ 137              	.LFB149:
+  23:task/attitude/src/attitude_task.c ****         }
+  24:task/attitude/src/attitude_task.c ****     }
+  25:task/attitude/src/attitude_task.c ****     attitude_self_delete(attitude_self);
+  26:task/attitude/src/attitude_task.c **** }
+  27:task/attitude/src/attitude_task.c **** 
+  28:task/attitude/src/attitude_task.c **** BaseType_t xAttitudeTsakCreat()
+  29:task/attitude/src/attitude_task.c **** {
+ 138              		.loc 1 29 1 is_stmt 1 view -0
+ 139              		.cfi_startproc
+ 140              		@ args = 0, pretend = 0, frame = 0
+ 141              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142 0000 00B5     		push	{lr}
+ 143              	.LCFI2:
+ 144              		.cfi_def_cfa_offset 4
+ 145              		.cfi_offset 14, -4
+ 146 0002 83B0     		sub	sp, sp, #12
+ 147              	.LCFI3:
+ 148              		.cfi_def_cfa_offset 16
+  30:task/attitude/src/attitude_task.c ****     BaseType_t xReturn = pdPASS;
+ 149              		.loc 1 30 5 view .LVU24
+ 150              	.LVL9:
+  31:task/attitude/src/attitude_task.c ****     xReturn = xTaskCreate((TaskFunction_t)AttitudeTsak,
+ 151              		.loc 1 31 5 view .LVU25
+ 152              		.loc 1 31 15 is_stmt 0 view .LVU26
+ 153 0004 074B     		ldr	r3, .L10
+ 154 0006 1B68     		ldr	r3, [r3]
+ 155 0008 0193     		str	r3, [sp, #4]
+ 156 000a 0923     		movs	r3, #9
+ 157 000c 0093     		str	r3, [sp]
+ 158 000e 0023     		movs	r3, #0
+ 159 0010 4FF48072 		mov	r2, #256
+ 160 0014 0449     		ldr	r1, .L10+4
+ 161 0016 0548     		ldr	r0, .L10+8
+ 162 0018 FFF7FEFF 		bl	xTaskCreate
+ 163              	.LVL10:
+  32:task/attitude/src/attitude_task.c ****                           (const char *)"AttitudeTsak",
+  33:task/attitude/src/attitude_task.c ****                           (uint16_t)256,
+  34:task/attitude/src/attitude_task.c ****                           (void *)NULL,
+  35:task/attitude/src/attitude_task.c ****                           (UBaseType_t)9,
+  36:task/attitude/src/attitude_task.c ****                           (TaskHandle_t *)AttitudeTaskHandle);
+  37:task/attitude/src/attitude_task.c **** 
+  38:task/attitude/src/attitude_task.c ****     return xReturn;
+ 164              		.loc 1 38 5 is_stmt 1 view .LVU27
+  39:task/attitude/src/attitude_task.c **** }
+ 165              		.loc 1 39 1 is_stmt 0 view .LVU28
+ 166 001c 03B0     		add	sp, sp, #12
+ 167              	.LCFI4:
+ 168              		.cfi_def_cfa_offset 4
+ 169              		@ sp needed
+ 170 001e 5DF804FB 		ldr	pc, [sp], #4
+ 171              	.L11:
+ 172 0022 00BF     		.align	2
+ 173              	.L10:
+ 174 0024 00000000 		.word	AttitudeTaskHandle
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s 			page 5
+
+
+ 175 0028 00000000 		.word	.LC3
+ 176 002c 00000000 		.word	AttitudeTsak
+ 177              		.cfi_endproc
+ 178              	.LFE149:
+ 180              		.section	.text.AttitudeQueueCreat,"ax",%progbits
+ 181              		.align	1
+ 182              		.global	AttitudeQueueCreat
+ 183              		.syntax unified
+ 184              		.thumb
+ 185              		.thumb_func
+ 186              		.fpu fpv5-d16
+ 188              	AttitudeQueueCreat:
+ 189              	.LFB150:
+  40:task/attitude/src/attitude_task.c **** 
+  41:task/attitude/src/attitude_task.c **** void AttitudeQueueCreat()
+  42:task/attitude/src/attitude_task.c **** {
+ 190              		.loc 1 42 1 is_stmt 1 view -0
+ 191              		.cfi_startproc
+ 192              		@ args = 0, pretend = 0, frame = 0
+ 193              		@ frame_needed = 0, uses_anonymous_args = 0
+ 194 0000 08B5     		push	{r3, lr}
+ 195              	.LCFI5:
+ 196              		.cfi_def_cfa_offset 8
+ 197              		.cfi_offset 3, -8
+ 198              		.cfi_offset 14, -4
+  43:task/attitude/src/attitude_task.c ****     AttitudeQueue = xQueueCreate((UBaseType_t)GESTURE_QUEUE_LEN, sizeof(attitude));
+ 199              		.loc 1 43 5 view .LVU30
+ 200              		.loc 1 43 21 is_stmt 0 view .LVU31
+ 201 0002 0022     		movs	r2, #0
+ 202 0004 2021     		movs	r1, #32
+ 203 0006 0120     		movs	r0, #1
+ 204 0008 FFF7FEFF 		bl	xQueueGenericCreate
+ 205              	.LVL11:
+ 206              		.loc 1 43 19 view .LVU32
+ 207 000c 014B     		ldr	r3, .L14
+ 208 000e 1860     		str	r0, [r3]
+  44:task/attitude/src/attitude_task.c **** }
+ 209              		.loc 1 44 1 view .LVU33
+ 210 0010 08BD     		pop	{r3, pc}
+ 211              	.L15:
+ 212 0012 00BF     		.align	2
+ 213              	.L14:
+ 214 0014 00000000 		.word	.LANCHOR0
+ 215              		.cfi_endproc
+ 216              	.LFE150:
+ 218              		.global	AttitudeQueue
+ 219              		.comm	AttitudeTaskHandle,4,4
+ 220              		.section	.bss.AttitudeQueue,"aw",%nobits
+ 221              		.align	2
+ 222              		.set	.LANCHOR0,. + 0
+ 225              	AttitudeQueue:
+ 226 0000 00000000 		.space	4
+ 227              		.text
+ 228              	.Letext0:
+ 229              		.file 2 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\arm-none-eabi\\include\\machine\\_def
+ 230              		.file 3 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 231              		.file 4 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\arm-none-eabi\\include\\sys\\_types.h
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s 			page 6
+
+
+ 232              		.file 5 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\lib\\gcc\\arm-none-eabi\\9.2.1\\inclu
+ 233              		.file 6 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 234              		.file 7 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.
+ 235              		.file 8 "Drivers/CMSIS/Include/core_cm7.h"
+ 236              		.file 9 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 237              		.file 10 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h"
+ 238              		.file 11 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h"
+ 239              		.file 12 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h"
+ 240              		.file 13 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_i2c.h"
+ 241              		.file 14 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h"
+ 242              		.file 15 "Inc/i2c.h"
+ 243              		.file 16 "Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h"
+ 244              		.file 17 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/portmacro.h"
+ 245              		.file 18 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 246              		.file 19 "task/attitude/inc/mpu6050.h"
+ 247              		.file 20 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\arm-none-eabi\\include\\math.h"
+ 248              		.file 21 "task/attitude/inc/attitude.h"
+ 249              		.file 22 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
+ 250              		.file 23 "task/attitude/inc/attitude_task.h"
+ 251              		.file 24 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 attitude_task.c
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:17     .rodata.AttitudeTsak.str1.4:00000000 $d
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:28     .text.AttitudeTsak:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:35     .text.AttitudeTsak:00000000 AttitudeTsak
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:117    .text.AttitudeTsak:00000054 $d
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:125    .rodata.xAttitudeTsakCreat.str1.4:00000000 $d
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:129    .text.xAttitudeTsakCreat:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:136    .text.xAttitudeTsakCreat:00000000 xAttitudeTsakCreat
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:174    .text.xAttitudeTsakCreat:00000024 $d
+                            *COM*:00000004 AttitudeTaskHandle
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:181    .text.AttitudeQueueCreat:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:188    .text.AttitudeQueueCreat:00000000 AttitudeQueueCreat
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:214    .text.AttitudeQueueCreat:00000014 $d
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:225    .bss.AttitudeQueue:00000000 AttitudeQueue
+C:\Users\Legend\AppData\Local\Temp\ccEJRPWg.s:221    .bss.AttitudeQueue:00000000 $d
+
+UNDEFINED SYMBOLS
+attitude_self_Creat
+xQueueGenericSend
+printf
+xTaskCreate
+xQueueGenericCreate

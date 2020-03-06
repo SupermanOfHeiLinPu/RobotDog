@@ -1,0 +1,20 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "cortex-debug.armToolchainPath": "F:/Prosoft/gcc_arm_none/2019q4/9 2019-q4-major/bin",
+        "cortex-debug.openocdPath": "openocd",
+        "files.associations": {
+            "mpu6050.h": "c",
+            "bsp_i2c.h": "c",
+            "freertos.h": "c",
+            "freertosconfig.h": "c",
+            "attitude.h": "c",
+            "attitude_task.h": "c",
+            "usart.h": "c"
+        }
+    }
+}

@@ -1,0 +1,1692 @@
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"mpu6050.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text.inv_row_2_scale,"ax",%progbits
+  17              		.align	1
+  18              		.arch armv7e-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv5-d16
+  24              	inv_row_2_scale:
+  25              	.LVL0:
+  26              	.LFB145:
+  27              		.file 1 "task/attitude/src/mpu6050.c"
+   1:task/attitude/src/mpu6050.c **** #include "mpu6050.h"
+   2:task/attitude/src/mpu6050.c **** 
+   3:task/attitude/src/mpu6050.c **** struct platform_data_s
+   4:task/attitude/src/mpu6050.c **** {
+   5:task/attitude/src/mpu6050.c ****     signed char orientation[9];
+   6:task/attitude/src/mpu6050.c **** };
+   7:task/attitude/src/mpu6050.c **** 
+   8:task/attitude/src/mpu6050.c **** static struct platform_data_s gyro_pdata = {
+   9:task/attitude/src/mpu6050.c ****     .orientation = {1, 0, 0,
+  10:task/attitude/src/mpu6050.c ****                     0, 1, 0,
+  11:task/attitude/src/mpu6050.c ****                     0, 0, 1}};
+  12:task/attitude/src/mpu6050.c **** 
+  13:task/attitude/src/mpu6050.c **** static unsigned short inv_row_2_scale(const signed char *row)
+  14:task/attitude/src/mpu6050.c **** {
+  28              		.loc 1 14 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  15:task/attitude/src/mpu6050.c ****     unsigned short b;
+  33              		.loc 1 15 5 view .LVU1
+  16:task/attitude/src/mpu6050.c **** 
+  17:task/attitude/src/mpu6050.c ****     if (row[0] > 0)
+  34              		.loc 1 17 5 view .LVU2
+  35              		.loc 1 17 12 is_stmt 0 view .LVU3
+  36 0000 90F90030 		ldrsb	r3, [r0]
+  37              		.loc 1 17 8 view .LVU4
+  38 0004 002B     		cmp	r3, #0
+  39 0006 01DD     		ble	.L9
+  18:task/attitude/src/mpu6050.c ****         b = 0;
+  40              		.loc 1 18 11 view .LVU5
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 2
+
+
+  41 0008 0020     		movs	r0, #0
+  42              	.LVL1:
+  43              		.loc 1 18 11 view .LVU6
+  44 000a 7047     		bx	lr
+  45              	.LVL2:
+  46              	.L9:
+  19:task/attitude/src/mpu6050.c ****     else if (row[0] < 0)
+  47              		.loc 1 19 10 is_stmt 1 view .LVU7
+  48              		.loc 1 19 13 is_stmt 0 view .LVU8
+  49 000c 0FDB     		blt	.L4
+  20:task/attitude/src/mpu6050.c ****         b = 4;
+  21:task/attitude/src/mpu6050.c ****     else if (row[1] > 0)
+  50              		.loc 1 21 10 is_stmt 1 view .LVU9
+  51              		.loc 1 21 17 is_stmt 0 view .LVU10
+  52 000e 90F90130 		ldrsb	r3, [r0, #1]
+  53              		.loc 1 21 13 view .LVU11
+  54 0012 002B     		cmp	r3, #0
+  55 0014 01DD     		ble	.L10
+  22:task/attitude/src/mpu6050.c ****         b = 1;
+  56              		.loc 1 22 11 view .LVU12
+  57 0016 0120     		movs	r0, #1
+  58              	.LVL3:
+  59              		.loc 1 22 11 view .LVU13
+  60 0018 7047     		bx	lr
+  61              	.LVL4:
+  62              	.L10:
+  23:task/attitude/src/mpu6050.c ****     else if (row[1] < 0)
+  63              		.loc 1 23 10 is_stmt 1 view .LVU14
+  64              		.loc 1 23 13 is_stmt 0 view .LVU15
+  65 001a 0ADB     		blt	.L6
+  24:task/attitude/src/mpu6050.c ****         b = 5;
+  25:task/attitude/src/mpu6050.c ****     else if (row[2] > 0)
+  66              		.loc 1 25 10 is_stmt 1 view .LVU16
+  67              		.loc 1 25 17 is_stmt 0 view .LVU17
+  68 001c 90F90230 		ldrsb	r3, [r0, #2]
+  69              		.loc 1 25 13 view .LVU18
+  70 0020 002B     		cmp	r3, #0
+  71 0022 08DC     		bgt	.L7
+  26:task/attitude/src/mpu6050.c ****         b = 2;
+  27:task/attitude/src/mpu6050.c ****     else if (row[2] < 0)
+  72              		.loc 1 27 10 is_stmt 1 view .LVU19
+  73              		.loc 1 27 13 is_stmt 0 view .LVU20
+  74 0024 01DB     		blt	.L11
+  28:task/attitude/src/mpu6050.c ****         b = 6;
+  29:task/attitude/src/mpu6050.c ****     else
+  30:task/attitude/src/mpu6050.c ****         b = 7; // error
+  75              		.loc 1 30 11 view .LVU21
+  76 0026 0720     		movs	r0, #7
+  77              	.LVL5:
+  31:task/attitude/src/mpu6050.c ****     return b;
+  78              		.loc 1 31 5 is_stmt 1 view .LVU22
+  32:task/attitude/src/mpu6050.c **** }
+  79              		.loc 1 32 1 is_stmt 0 view .LVU23
+  80 0028 7047     		bx	lr
+  81              	.LVL6:
+  82              	.L11:
+  28:task/attitude/src/mpu6050.c ****         b = 6;
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 3
+
+
+  83              		.loc 1 28 11 view .LVU24
+  84 002a 0620     		movs	r0, #6
+  85              	.LVL7:
+  28:task/attitude/src/mpu6050.c ****         b = 6;
+  86              		.loc 1 28 11 view .LVU25
+  87 002c 7047     		bx	lr
+  88              	.LVL8:
+  89              	.L4:
+  20:task/attitude/src/mpu6050.c ****     else if (row[1] > 0)
+  90              		.loc 1 20 11 view .LVU26
+  91 002e 0420     		movs	r0, #4
+  92              	.LVL9:
+  20:task/attitude/src/mpu6050.c ****     else if (row[1] > 0)
+  93              		.loc 1 20 11 view .LVU27
+  94 0030 7047     		bx	lr
+  95              	.LVL10:
+  96              	.L6:
+  24:task/attitude/src/mpu6050.c ****     else if (row[2] > 0)
+  97              		.loc 1 24 11 view .LVU28
+  98 0032 0520     		movs	r0, #5
+  99              	.LVL11:
+  24:task/attitude/src/mpu6050.c ****     else if (row[2] > 0)
+ 100              		.loc 1 24 11 view .LVU29
+ 101 0034 7047     		bx	lr
+ 102              	.LVL12:
+ 103              	.L7:
+  26:task/attitude/src/mpu6050.c ****     else if (row[2] < 0)
+ 104              		.loc 1 26 11 view .LVU30
+ 105 0036 0220     		movs	r0, #2
+ 106              	.LVL13:
+  26:task/attitude/src/mpu6050.c ****     else if (row[2] < 0)
+ 107              		.loc 1 26 11 view .LVU31
+ 108 0038 7047     		bx	lr
+ 109              		.cfi_endproc
+ 110              	.LFE145:
+ 112              		.section	.text._mpu_get_timestamp,"ax",%progbits
+ 113              		.align	1
+ 114              		.syntax unified
+ 115              		.thumb
+ 116              		.thumb_func
+ 117              		.fpu fpv5-d16
+ 119              	_mpu_get_timestamp:
+ 120              	.LVL14:
+ 121              	.LFB152:
+  33:task/attitude/src/mpu6050.c **** 
+  34:task/attitude/src/mpu6050.c **** /** Converts an orientation matrix made up of 0,+1,and -1 to a scalar representation.
+  35:task/attitude/src/mpu6050.c **** * @param[in] mtx Orientation matrix to convert to a scalar.
+  36:task/attitude/src/mpu6050.c **** * @return Description of orientation matrix. The lowest 2 bits (0 and 1) represent the column the o
+  37:task/attitude/src/mpu6050.c **** * first row, with the bit number 2 being the sign. The next 2 bits (3 and 4) represent
+  38:task/attitude/src/mpu6050.c **** * the column the one is on for the second row with bit number 5 being the sign.
+  39:task/attitude/src/mpu6050.c **** * The next 2 bits (6 and 7) represent the column the one is on for the third row with
+  40:task/attitude/src/mpu6050.c **** * bit number 8 being the sign. In binary the identity matrix would therefor be:
+  41:task/attitude/src/mpu6050.c **** * 010_001_000 or 0x88 in hex.
+  42:task/attitude/src/mpu6050.c **** */
+  43:task/attitude/src/mpu6050.c **** unsigned short inv_orientation_matrix_to_scalar(const signed char *mtx)
+  44:task/attitude/src/mpu6050.c **** {
+  45:task/attitude/src/mpu6050.c **** 
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 4
+
+
+  46:task/attitude/src/mpu6050.c ****     unsigned short scalar;
+  47:task/attitude/src/mpu6050.c **** 
+  48:task/attitude/src/mpu6050.c ****     /*
+  49:task/attitude/src/mpu6050.c ****        XYZ  010_001_000 Identity Matrix
+  50:task/attitude/src/mpu6050.c ****        XZY  001_010_000
+  51:task/attitude/src/mpu6050.c ****        YXZ  010_000_001
+  52:task/attitude/src/mpu6050.c ****        YZX  000_010_001
+  53:task/attitude/src/mpu6050.c ****        ZXY  001_000_010
+  54:task/attitude/src/mpu6050.c ****        ZYX  000_001_010
+  55:task/attitude/src/mpu6050.c ****      */
+  56:task/attitude/src/mpu6050.c **** 
+  57:task/attitude/src/mpu6050.c ****     scalar = inv_row_2_scale(mtx);
+  58:task/attitude/src/mpu6050.c ****     scalar |= inv_row_2_scale(mtx + 3) << 3;
+  59:task/attitude/src/mpu6050.c ****     scalar |= inv_row_2_scale(mtx + 6) << 6;
+  60:task/attitude/src/mpu6050.c **** 
+  61:task/attitude/src/mpu6050.c ****     return scalar;
+  62:task/attitude/src/mpu6050.c **** }
+  63:task/attitude/src/mpu6050.c **** 
+  64:task/attitude/src/mpu6050.c **** /*
+  65:task/attitude/src/mpu6050.c ****  *功能:mpu6050初始化
+  66:task/attitude/src/mpu6050.c ****  self->isDMPon:1打开dmp；0关闭dmp
+  67:task/attitude/src/mpu6050.c ****  self->sample_rate:采样率
+  68:task/attitude/src/mpu6050.c ****  self->dmp_rate：dmp速度
+  69:task/attitude/src/mpu6050.c ****  *TODO:dmp初始化
+  70:task/attitude/src/mpu6050.c ****  *成功返回0
+  71:task/attitude/src/mpu6050.c ****  */
+  72:task/attitude/src/mpu6050.c **** static int _mpu6050Init(mpu6050 *self)
+  73:task/attitude/src/mpu6050.c **** {
+  74:task/attitude/src/mpu6050.c ****     unsigned char data;
+  75:task/attitude/src/mpu6050.c **** 
+  76:task/attitude/src/mpu6050.c ****     unsigned long timestamp;
+  77:task/attitude/src/mpu6050.c ****     struct int_param_s int_param;
+  78:task/attitude/src/mpu6050.c ****     //延迟一会
+  79:task/attitude/src/mpu6050.c ****     (self->mpuFunList->mpu_delay)(10);
+  80:task/attitude/src/mpu6050.c ****     //如果使用dmp
+  81:task/attitude/src/mpu6050.c ****     if (self->isDMPon)
+  82:task/attitude/src/mpu6050.c ****     {
+  83:task/attitude/src/mpu6050.c ****         if (mpu_init(&int_param))
+  84:task/attitude/src/mpu6050.c ****         {
+  85:task/attitude/src/mpu6050.c ****             return -1;
+  86:task/attitude/src/mpu6050.c ****         }
+  87:task/attitude/src/mpu6050.c ****         //唤醒所有传感器
+  88:task/attitude/src/mpu6050.c ****         mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+  89:task/attitude/src/mpu6050.c ****         //使能accel和gyro的fifo
+  90:task/attitude/src/mpu6050.c ****         mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+  91:task/attitude/src/mpu6050.c ****         //设置采样率
+  92:task/attitude/src/mpu6050.c ****         mpu_set_sample_rate(self->sample_rate);
+  93:task/attitude/src/mpu6050.c ****         //获取时间戳
+  94:task/attitude/src/mpu6050.c ****         get_tick_count(&timestamp);
+  95:task/attitude/src/mpu6050.c ****         //加载dmp固件
+  96:task/attitude/src/mpu6050.c ****         dmp_load_motion_driver_firmware();
+  97:task/attitude/src/mpu6050.c ****         dmp_set_orientation(
+  98:task/attitude/src/mpu6050.c ****             inv_orientation_matrix_to_scalar(gyro_pdata.orientation));
+  99:task/attitude/src/mpu6050.c ****         unsigned short dmp_features = DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
+ 100:task/attitude/src/mpu6050.c ****                                       DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP
+ 101:task/attitude/src/mpu6050.c ****                                       DMP_FEATURE_GYRO_CAL;
+ 102:task/attitude/src/mpu6050.c ****         dmp_enable_feature(dmp_features);
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 5
+
+
+ 103:task/attitude/src/mpu6050.c ****         dmp_set_fifo_rate(self->dmp_rate);
+ 104:task/attitude/src/mpu6050.c ****         mpu_set_dmp_state(1);
+ 105:task/attitude/src/mpu6050.c ****         return 0;
+ 106:task/attitude/src/mpu6050.c ****     }
+ 107:task/attitude/src/mpu6050.c ****     //不适用dmp
+ 108:task/attitude/src/mpu6050.c ****     //唤醒
+ 109:task/attitude/src/mpu6050.c ****     data = 0;
+ 110:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_PWR_MGMT_1, &data))
+ 111:task/attitude/src/mpu6050.c ****         return -1;
+ 112:task/attitude/src/mpu6050.c ****     //设置陀螺仪量程为2000
+ 113:task/attitude/src/mpu6050.c ****     data = 3 << 3;
+ 114:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_GYRO_CONFIG, &data))
+ 115:task/attitude/src/mpu6050.c ****         return -2;
+ 116:task/attitude/src/mpu6050.c ****     //设置加速度计的量程为16g
+ 117:task/attitude/src/mpu6050.c ****     data = 3 << 3;
+ 118:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_ACCEL_CONFIG, &data))
+ 119:task/attitude/src/mpu6050.c ****         return -3;
+ 120:task/attitude/src/mpu6050.c ****     //数字低通滤波器1:188hz ;2:98hz; 3:42hz; 4:20hz; 5:10hz ;6:5hz
+ 121:task/attitude/src/mpu6050.c ****     data = 1;
+ 122:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_LPF_CONFIG, &data))
+ 123:task/attitude/src/mpu6050.c ****         return -4;
+ 124:task/attitude/src/mpu6050.c ****     //设置采样率rate data = 1000 / rate - 1;
+ 125:task/attitude/src/mpu6050.c ****     data = 1000 / self->sample_rate - 1;
+ 126:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_SMPLRT_DIV, &data))
+ 127:task/attitude/src/mpu6050.c ****         return -5;
+ 128:task/attitude/src/mpu6050.c ****     (self->mpuFunList->mpu_delay)(10);
+ 129:task/attitude/src/mpu6050.c ****     return 0;
+ 130:task/attitude/src/mpu6050.c **** }
+ 131:task/attitude/src/mpu6050.c **** 
+ 132:task/attitude/src/mpu6050.c **** /*
+ 133:task/attitude/src/mpu6050.c ****  *功能：从mpu读取传感器原始数据
+ 134:task/attitude/src/mpu6050.c ****  *读取的数据:
+ 135:task/attitude/src/mpu6050.c ****  self->gory[3](xyz),
+ 136:task/attitude/src/mpu6050.c ****  self->accel[3](xyz),
+ 137:task/attitude/src/mpu6050.c ****  self->temperature
+ 138:task/attitude/src/mpu6050.c ****  self->timestamp
+ 139:task/attitude/src/mpu6050.c ****  *备注:获取时间戳用的freeRTOS的API
+ 140:task/attitude/src/mpu6050.c ****  *TODO:异常返回,目前只返回0
+ 141:task/attitude/src/mpu6050.c ****  */
+ 142:task/attitude/src/mpu6050.c **** static unsigned char _mpuReadData(mpu6050 *self)
+ 143:task/attitude/src/mpu6050.c **** {
+ 144:task/attitude/src/mpu6050.c ****     int status = 0;
+ 145:task/attitude/src/mpu6050.c ****     unsigned char data;
+ 146:task/attitude/src/mpu6050.c ****     long temp;
+ 147:task/attitude/src/mpu6050.c ****     static short sensors;
+ 148:task/attitude/src/mpu6050.c ****     unsigned char more;
+ 149:task/attitude/src/mpu6050.c ****     static long tmp_quat[4];
+ 150:task/attitude/src/mpu6050.c ****     //如果打开了dmp
+ 151:task/attitude/src/mpu6050.c ****     if (self->isDMPon)
+ 152:task/attitude/src/mpu6050.c ****     {
+ 153:task/attitude/src/mpu6050.c ****         get_tick_count(&(self->timestamp));
+ 154:task/attitude/src/mpu6050.c ****         status = dmp_read_fifo(self->gory, self->accel, tmp_quat, &(self->timestamp), &sensors, &mo
+ 155:task/attitude/src/mpu6050.c ****         if (status)
+ 156:task/attitude/src/mpu6050.c ****             return -1;
+ 157:task/attitude/src/mpu6050.c ****         self->quat[0] = tmp_quat[0] / MPU6050_Q30;
+ 158:task/attitude/src/mpu6050.c ****         self->quat[1] = tmp_quat[1] / MPU6050_Q30;
+ 159:task/attitude/src/mpu6050.c ****         self->quat[2] = tmp_quat[2] / MPU6050_Q30;
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 6
+
+
+ 160:task/attitude/src/mpu6050.c ****         self->quat[3] = tmp_quat[3] / MPU6050_Q30;
+ 161:task/attitude/src/mpu6050.c ****         return status;
+ 162:task/attitude/src/mpu6050.c ****     }
+ 163:task/attitude/src/mpu6050.c ****     //读取原始数据
+ 164:task/attitude/src/mpu6050.c ****     //陀螺仪x轴
+ 165:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_XOUT_H, &data);
+ 166:task/attitude/src/mpu6050.c ****     self->gory[0] = data << 8;
+ 167:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_XOUT_L, &data);
+ 168:task/attitude/src/mpu6050.c ****     self->gory[0] |= data;
+ 169:task/attitude/src/mpu6050.c ****     //陀螺仪y轴
+ 170:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_YOUT_H, &data);
+ 171:task/attitude/src/mpu6050.c ****     self->gory[1] = data << 8;
+ 172:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_YOUT_L, &data);
+ 173:task/attitude/src/mpu6050.c ****     self->gory[1] |= data;
+ 174:task/attitude/src/mpu6050.c ****     //陀螺仪z轴
+ 175:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_ZOUT_H, &data);
+ 176:task/attitude/src/mpu6050.c ****     self->gory[2] = data << 8;
+ 177:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_ZOUT_L, &data);
+ 178:task/attitude/src/mpu6050.c ****     self->gory[2] |= data;
+ 179:task/attitude/src/mpu6050.c ****     //加速度计X轴
+ 180:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_XOUT_H, &data);
+ 181:task/attitude/src/mpu6050.c ****     self->accel[0] = data << 8;
+ 182:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_XOUT_L, &data);
+ 183:task/attitude/src/mpu6050.c ****     self->accel[0] |= data;
+ 184:task/attitude/src/mpu6050.c ****     //加速度计Y轴
+ 185:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_YOUT_H, &data);
+ 186:task/attitude/src/mpu6050.c ****     self->accel[1] = data << 8;
+ 187:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_YOUT_L, &data);
+ 188:task/attitude/src/mpu6050.c ****     self->accel[1] |= data;
+ 189:task/attitude/src/mpu6050.c ****     //加速度计z轴
+ 190:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_ZOUT_H, &data);
+ 191:task/attitude/src/mpu6050.c ****     self->accel[2] = data << 8;
+ 192:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_ZOUT_L, &data);
+ 193:task/attitude/src/mpu6050.c ****     self->accel[2] |= data;
+ 194:task/attitude/src/mpu6050.c ****     //温度
+ 195:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_TEMP_OUT_H, &data);
+ 196:task/attitude/src/mpu6050.c ****     temp = data << 8;
+ 197:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_TEMP_OUT_L, &data);
+ 198:task/attitude/src/mpu6050.c ****     temp |= data;
+ 199:task/attitude/src/mpu6050.c ****     self->temperature = (double)temp / MPU6050_Q16;
+ 200:task/attitude/src/mpu6050.c ****     //获取时间戳
+ 201:task/attitude/src/mpu6050.c ****     (self->mpuFunList->get_timestamp)(&(self->timestamp));
+ 202:task/attitude/src/mpu6050.c ****     return (unsigned char)status;
+ 203:task/attitude/src/mpu6050.c **** }
+ 204:task/attitude/src/mpu6050.c **** 
+ 205:task/attitude/src/mpu6050.c **** /*
+ 206:task/attitude/src/mpu6050.c ****  *功能：mpu用到的延迟
+ 207:task/attitude/src/mpu6050.c ****  */
+ 208:task/attitude/src/mpu6050.c **** static void _mpu_delay(unsigned int num)
+ 209:task/attitude/src/mpu6050.c **** {
+ 210:task/attitude/src/mpu6050.c ****     vTaskDelay(num);
+ 211:task/attitude/src/mpu6050.c **** }
+ 212:task/attitude/src/mpu6050.c **** 
+ 213:task/attitude/src/mpu6050.c **** /*
+ 214:task/attitude/src/mpu6050.c ****  *功能:读一个字节
+ 215:task/attitude/src/mpu6050.c ****  *返回0代表成功
+ 216:task/attitude/src/mpu6050.c ****  */
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 7
+
+
+ 217:task/attitude/src/mpu6050.c **** static int _ReadByte(mpu6050 *self, unsigned char reg, unsigned char *dataptr)
+ 218:task/attitude/src/mpu6050.c **** {
+ 219:task/attitude/src/mpu6050.c ****     return (Sensors_I2C_ReadRegister(self->devaddr, reg, 1, dataptr));
+ 220:task/attitude/src/mpu6050.c **** }
+ 221:task/attitude/src/mpu6050.c **** 
+ 222:task/attitude/src/mpu6050.c **** /*
+ 223:task/attitude/src/mpu6050.c ****  *功能:写一个字节
+ 224:task/attitude/src/mpu6050.c ****  *返回0代表成功
+ 225:task/attitude/src/mpu6050.c ****  */
+ 226:task/attitude/src/mpu6050.c **** static int _WriteByte(mpu6050 *self, unsigned char reg, unsigned char *dataptr)
+ 227:task/attitude/src/mpu6050.c **** {
+ 228:task/attitude/src/mpu6050.c ****     return (Sensors_I2C_WriteRegister(self->devaddr, reg, 1, dataptr));
+ 229:task/attitude/src/mpu6050.c **** }
+ 230:task/attitude/src/mpu6050.c **** 
+ 231:task/attitude/src/mpu6050.c **** /*
+ 232:task/attitude/src/mpu6050.c ****  *功能:获取时间戳
+ 233:task/attitude/src/mpu6050.c ****  *返回0代表成功
+ 234:task/attitude/src/mpu6050.c ****  */
+ 235:task/attitude/src/mpu6050.c **** static int _mpu_get_timestamp(unsigned long *timestamp)
+ 236:task/attitude/src/mpu6050.c **** {
+ 122              		.loc 1 236 1 is_stmt 1 view -0
+ 123              		.cfi_startproc
+ 124              		@ args = 0, pretend = 0, frame = 0
+ 125              		@ frame_needed = 0, uses_anonymous_args = 0
+ 126              		.loc 1 236 1 is_stmt 0 view .LVU33
+ 127 0000 10B5     		push	{r4, lr}
+ 128              	.LCFI0:
+ 129              		.cfi_def_cfa_offset 8
+ 130              		.cfi_offset 4, -8
+ 131              		.cfi_offset 14, -4
+ 132 0002 0446     		mov	r4, r0
+ 237:task/attitude/src/mpu6050.c ****     timestamp[0] = xTaskGetTickCount();
+ 133              		.loc 1 237 5 is_stmt 1 view .LVU34
+ 134              		.loc 1 237 20 is_stmt 0 view .LVU35
+ 135 0004 FFF7FEFF 		bl	xTaskGetTickCount
+ 136              	.LVL15:
+ 137              		.loc 1 237 18 view .LVU36
+ 138 0008 2060     		str	r0, [r4]
+ 238:task/attitude/src/mpu6050.c ****     return 0;
+ 139              		.loc 1 238 5 is_stmt 1 view .LVU37
+ 239:task/attitude/src/mpu6050.c **** }
+ 140              		.loc 1 239 1 is_stmt 0 view .LVU38
+ 141 000a 0020     		movs	r0, #0
+ 142 000c 10BD     		pop	{r4, pc}
+ 143              		.loc 1 239 1 view .LVU39
+ 144              		.cfi_endproc
+ 145              	.LFE152:
+ 147              		.section	.text._ReadByte,"ax",%progbits
+ 148              		.align	1
+ 149              		.syntax unified
+ 150              		.thumb
+ 151              		.thumb_func
+ 152              		.fpu fpv5-d16
+ 154              	_ReadByte:
+ 155              	.LVL16:
+ 156              	.LFB150:
+ 218:task/attitude/src/mpu6050.c ****     return (Sensors_I2C_ReadRegister(self->devaddr, reg, 1, dataptr));
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 8
+
+
+ 157              		.loc 1 218 1 is_stmt 1 view -0
+ 158              		.cfi_startproc
+ 159              		@ args = 0, pretend = 0, frame = 0
+ 160              		@ frame_needed = 0, uses_anonymous_args = 0
+ 218:task/attitude/src/mpu6050.c ****     return (Sensors_I2C_ReadRegister(self->devaddr, reg, 1, dataptr));
+ 161              		.loc 1 218 1 is_stmt 0 view .LVU41
+ 162 0000 08B5     		push	{r3, lr}
+ 163              	.LCFI1:
+ 164              		.cfi_def_cfa_offset 8
+ 165              		.cfi_offset 3, -8
+ 166              		.cfi_offset 14, -4
+ 167 0002 1346     		mov	r3, r2
+ 219:task/attitude/src/mpu6050.c **** }
+ 168              		.loc 1 219 5 is_stmt 1 view .LVU42
+ 219:task/attitude/src/mpu6050.c **** }
+ 169              		.loc 1 219 13 is_stmt 0 view .LVU43
+ 170 0004 0122     		movs	r2, #1
+ 171              	.LVL17:
+ 219:task/attitude/src/mpu6050.c **** }
+ 172              		.loc 1 219 13 view .LVU44
+ 173 0006 0079     		ldrb	r0, [r0, #4]	@ zero_extendqisi2
+ 174              	.LVL18:
+ 219:task/attitude/src/mpu6050.c **** }
+ 175              		.loc 1 219 13 view .LVU45
+ 176 0008 FFF7FEFF 		bl	Sensors_I2C_ReadRegister
+ 177              	.LVL19:
+ 220:task/attitude/src/mpu6050.c **** 
+ 178              		.loc 1 220 1 view .LVU46
+ 179 000c 08BD     		pop	{r3, pc}
+ 180              		.cfi_endproc
+ 181              	.LFE150:
+ 183              		.section	.text._WriteByte,"ax",%progbits
+ 184              		.align	1
+ 185              		.syntax unified
+ 186              		.thumb
+ 187              		.thumb_func
+ 188              		.fpu fpv5-d16
+ 190              	_WriteByte:
+ 191              	.LVL20:
+ 192              	.LFB151:
+ 227:task/attitude/src/mpu6050.c ****     return (Sensors_I2C_WriteRegister(self->devaddr, reg, 1, dataptr));
+ 193              		.loc 1 227 1 is_stmt 1 view -0
+ 194              		.cfi_startproc
+ 195              		@ args = 0, pretend = 0, frame = 0
+ 196              		@ frame_needed = 0, uses_anonymous_args = 0
+ 227:task/attitude/src/mpu6050.c ****     return (Sensors_I2C_WriteRegister(self->devaddr, reg, 1, dataptr));
+ 197              		.loc 1 227 1 is_stmt 0 view .LVU48
+ 198 0000 08B5     		push	{r3, lr}
+ 199              	.LCFI2:
+ 200              		.cfi_def_cfa_offset 8
+ 201              		.cfi_offset 3, -8
+ 202              		.cfi_offset 14, -4
+ 203 0002 1346     		mov	r3, r2
+ 228:task/attitude/src/mpu6050.c **** }
+ 204              		.loc 1 228 5 is_stmt 1 view .LVU49
+ 228:task/attitude/src/mpu6050.c **** }
+ 205              		.loc 1 228 13 is_stmt 0 view .LVU50
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 9
+
+
+ 206 0004 0122     		movs	r2, #1
+ 207              	.LVL21:
+ 228:task/attitude/src/mpu6050.c **** }
+ 208              		.loc 1 228 13 view .LVU51
+ 209 0006 0079     		ldrb	r0, [r0, #4]	@ zero_extendqisi2
+ 210              	.LVL22:
+ 228:task/attitude/src/mpu6050.c **** }
+ 211              		.loc 1 228 13 view .LVU52
+ 212 0008 FFF7FEFF 		bl	Sensors_I2C_WriteRegister
+ 213              	.LVL23:
+ 229:task/attitude/src/mpu6050.c **** 
+ 214              		.loc 1 229 1 view .LVU53
+ 215 000c 08BD     		pop	{r3, pc}
+ 216              		.cfi_endproc
+ 217              	.LFE151:
+ 219              		.section	.text._mpu_delay,"ax",%progbits
+ 220              		.align	1
+ 221              		.syntax unified
+ 222              		.thumb
+ 223              		.thumb_func
+ 224              		.fpu fpv5-d16
+ 226              	_mpu_delay:
+ 227              	.LVL24:
+ 228              	.LFB149:
+ 209:task/attitude/src/mpu6050.c ****     vTaskDelay(num);
+ 229              		.loc 1 209 1 is_stmt 1 view -0
+ 230              		.cfi_startproc
+ 231              		@ args = 0, pretend = 0, frame = 0
+ 232              		@ frame_needed = 0, uses_anonymous_args = 0
+ 209:task/attitude/src/mpu6050.c ****     vTaskDelay(num);
+ 233              		.loc 1 209 1 is_stmt 0 view .LVU55
+ 234 0000 08B5     		push	{r3, lr}
+ 235              	.LCFI3:
+ 236              		.cfi_def_cfa_offset 8
+ 237              		.cfi_offset 3, -8
+ 238              		.cfi_offset 14, -4
+ 210:task/attitude/src/mpu6050.c **** }
+ 239              		.loc 1 210 5 is_stmt 1 view .LVU56
+ 240 0002 FFF7FEFF 		bl	vTaskDelay
+ 241              	.LVL25:
+ 211:task/attitude/src/mpu6050.c **** 
+ 242              		.loc 1 211 1 is_stmt 0 view .LVU57
+ 243 0006 08BD     		pop	{r3, pc}
+ 244              		.cfi_endproc
+ 245              	.LFE149:
+ 247              		.section	.text._mpuReadData,"ax",%progbits
+ 248              		.align	1
+ 249              		.syntax unified
+ 250              		.thumb
+ 251              		.thumb_func
+ 252              		.fpu fpv5-d16
+ 254              	_mpuReadData:
+ 255              	.LVL26:
+ 256              	.LFB148:
+ 143:task/attitude/src/mpu6050.c ****     int status = 0;
+ 257              		.loc 1 143 1 is_stmt 1 view -0
+ 258              		.cfi_startproc
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 10
+
+
+ 259              		@ args = 0, pretend = 0, frame = 8
+ 260              		@ frame_needed = 0, uses_anonymous_args = 0
+ 143:task/attitude/src/mpu6050.c ****     int status = 0;
+ 261              		.loc 1 143 1 is_stmt 0 view .LVU59
+ 262 0000 30B5     		push	{r4, r5, lr}
+ 263              	.LCFI4:
+ 264              		.cfi_def_cfa_offset 12
+ 265              		.cfi_offset 4, -12
+ 266              		.cfi_offset 5, -8
+ 267              		.cfi_offset 14, -4
+ 268 0002 85B0     		sub	sp, sp, #20
+ 269              	.LCFI5:
+ 270              		.cfi_def_cfa_offset 32
+ 271 0004 0446     		mov	r4, r0
+ 144:task/attitude/src/mpu6050.c ****     unsigned char data;
+ 272              		.loc 1 144 5 is_stmt 1 view .LVU60
+ 273              	.LVL27:
+ 145:task/attitude/src/mpu6050.c ****     long temp;
+ 274              		.loc 1 145 5 view .LVU61
+ 146:task/attitude/src/mpu6050.c ****     static short sensors;
+ 275              		.loc 1 146 5 view .LVU62
+ 147:task/attitude/src/mpu6050.c ****     unsigned char more;
+ 276              		.loc 1 147 5 view .LVU63
+ 148:task/attitude/src/mpu6050.c ****     static long tmp_quat[4];
+ 277              		.loc 1 148 5 view .LVU64
+ 149:task/attitude/src/mpu6050.c ****     //如果打开了dmp
+ 278              		.loc 1 149 5 view .LVU65
+ 151:task/attitude/src/mpu6050.c ****     {
+ 279              		.loc 1 151 5 view .LVU66
+ 151:task/attitude/src/mpu6050.c ****     {
+ 280              		.loc 1 151 13 is_stmt 0 view .LVU67
+ 281 0006 4379     		ldrb	r3, [r0, #5]	@ zero_extendqisi2
+ 151:task/attitude/src/mpu6050.c ****     {
+ 282              		.loc 1 151 8 view .LVU68
+ 283 0008 002B     		cmp	r3, #0
+ 284 000a 40F0AF80 		bne	.L25
+ 165:task/attitude/src/mpu6050.c ****     self->gory[0] = data << 8;
+ 285              		.loc 1 165 5 is_stmt 1 view .LVU69
+ 165:task/attitude/src/mpu6050.c ****     self->gory[0] = data << 8;
+ 286              		.loc 1 165 10 is_stmt 0 view .LVU70
+ 287 000e 0368     		ldr	r3, [r0]
+ 165:task/attitude/src/mpu6050.c ****     self->gory[0] = data << 8;
+ 288              		.loc 1 165 22 view .LVU71
+ 289 0010 1B69     		ldr	r3, [r3, #16]
+ 290 0012 0DF10F02 		add	r2, sp, #15
+ 291 0016 4321     		movs	r1, #67
+ 292 0018 9847     		blx	r3
+ 293              	.LVL28:
+ 166:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_XOUT_L, &data);
+ 294              		.loc 1 166 5 is_stmt 1 view .LVU72
+ 166:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_XOUT_L, &data);
+ 295              		.loc 1 166 26 is_stmt 0 view .LVU73
+ 296 001a 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 297 001e 1B02     		lsls	r3, r3, #8
+ 166:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_XOUT_L, &data);
+ 298              		.loc 1 166 19 view .LVU74
+ 299 0020 6381     		strh	r3, [r4, #10]	@ movhi
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 11
+
+
+ 167:task/attitude/src/mpu6050.c ****     self->gory[0] |= data;
+ 300              		.loc 1 167 5 is_stmt 1 view .LVU75
+ 167:task/attitude/src/mpu6050.c ****     self->gory[0] |= data;
+ 301              		.loc 1 167 10 is_stmt 0 view .LVU76
+ 302 0022 2368     		ldr	r3, [r4]
+ 167:task/attitude/src/mpu6050.c ****     self->gory[0] |= data;
+ 303              		.loc 1 167 22 view .LVU77
+ 304 0024 1B69     		ldr	r3, [r3, #16]
+ 305 0026 0DF10F02 		add	r2, sp, #15
+ 306 002a 4421     		movs	r1, #68
+ 307 002c 2046     		mov	r0, r4
+ 308 002e 9847     		blx	r3
+ 309              	.LVL29:
+ 168:task/attitude/src/mpu6050.c ****     //陀螺仪y轴
+ 310              		.loc 1 168 5 is_stmt 1 view .LVU78
+ 168:task/attitude/src/mpu6050.c ****     //陀螺仪y轴
+ 311              		.loc 1 168 19 is_stmt 0 view .LVU79
+ 312 0030 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 313 0034 6289     		ldrh	r2, [r4, #10]
+ 314 0036 1343     		orrs	r3, r3, r2
+ 315 0038 6381     		strh	r3, [r4, #10]	@ movhi
+ 170:task/attitude/src/mpu6050.c ****     self->gory[1] = data << 8;
+ 316              		.loc 1 170 5 is_stmt 1 view .LVU80
+ 170:task/attitude/src/mpu6050.c ****     self->gory[1] = data << 8;
+ 317              		.loc 1 170 10 is_stmt 0 view .LVU81
+ 318 003a 2368     		ldr	r3, [r4]
+ 170:task/attitude/src/mpu6050.c ****     self->gory[1] = data << 8;
+ 319              		.loc 1 170 22 view .LVU82
+ 320 003c 1B69     		ldr	r3, [r3, #16]
+ 321 003e 0DF10F02 		add	r2, sp, #15
+ 322 0042 4521     		movs	r1, #69
+ 323 0044 2046     		mov	r0, r4
+ 324 0046 9847     		blx	r3
+ 325              	.LVL30:
+ 171:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_YOUT_L, &data);
+ 326              		.loc 1 171 5 is_stmt 1 view .LVU83
+ 171:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_YOUT_L, &data);
+ 327              		.loc 1 171 26 is_stmt 0 view .LVU84
+ 328 0048 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 329 004c 1B02     		lsls	r3, r3, #8
+ 171:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_YOUT_L, &data);
+ 330              		.loc 1 171 19 view .LVU85
+ 331 004e A381     		strh	r3, [r4, #12]	@ movhi
+ 172:task/attitude/src/mpu6050.c ****     self->gory[1] |= data;
+ 332              		.loc 1 172 5 is_stmt 1 view .LVU86
+ 172:task/attitude/src/mpu6050.c ****     self->gory[1] |= data;
+ 333              		.loc 1 172 10 is_stmt 0 view .LVU87
+ 334 0050 2368     		ldr	r3, [r4]
+ 172:task/attitude/src/mpu6050.c ****     self->gory[1] |= data;
+ 335              		.loc 1 172 22 view .LVU88
+ 336 0052 1B69     		ldr	r3, [r3, #16]
+ 337 0054 0DF10F02 		add	r2, sp, #15
+ 338 0058 4621     		movs	r1, #70
+ 339 005a 2046     		mov	r0, r4
+ 340 005c 9847     		blx	r3
+ 341              	.LVL31:
+ 173:task/attitude/src/mpu6050.c ****     //陀螺仪z轴
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 12
+
+
+ 342              		.loc 1 173 5 is_stmt 1 view .LVU89
+ 173:task/attitude/src/mpu6050.c ****     //陀螺仪z轴
+ 343              		.loc 1 173 19 is_stmt 0 view .LVU90
+ 344 005e 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 345 0062 A289     		ldrh	r2, [r4, #12]
+ 346 0064 1343     		orrs	r3, r3, r2
+ 347 0066 A381     		strh	r3, [r4, #12]	@ movhi
+ 175:task/attitude/src/mpu6050.c ****     self->gory[2] = data << 8;
+ 348              		.loc 1 175 5 is_stmt 1 view .LVU91
+ 175:task/attitude/src/mpu6050.c ****     self->gory[2] = data << 8;
+ 349              		.loc 1 175 10 is_stmt 0 view .LVU92
+ 350 0068 2368     		ldr	r3, [r4]
+ 175:task/attitude/src/mpu6050.c ****     self->gory[2] = data << 8;
+ 351              		.loc 1 175 22 view .LVU93
+ 352 006a 1B69     		ldr	r3, [r3, #16]
+ 353 006c 0DF10F02 		add	r2, sp, #15
+ 354 0070 4721     		movs	r1, #71
+ 355 0072 2046     		mov	r0, r4
+ 356 0074 9847     		blx	r3
+ 357              	.LVL32:
+ 176:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_ZOUT_L, &data);
+ 358              		.loc 1 176 5 is_stmt 1 view .LVU94
+ 176:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_ZOUT_L, &data);
+ 359              		.loc 1 176 26 is_stmt 0 view .LVU95
+ 360 0076 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 361 007a 1B02     		lsls	r3, r3, #8
+ 176:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_GYRO_ZOUT_L, &data);
+ 362              		.loc 1 176 19 view .LVU96
+ 363 007c E381     		strh	r3, [r4, #14]	@ movhi
+ 177:task/attitude/src/mpu6050.c ****     self->gory[2] |= data;
+ 364              		.loc 1 177 5 is_stmt 1 view .LVU97
+ 177:task/attitude/src/mpu6050.c ****     self->gory[2] |= data;
+ 365              		.loc 1 177 10 is_stmt 0 view .LVU98
+ 366 007e 2368     		ldr	r3, [r4]
+ 177:task/attitude/src/mpu6050.c ****     self->gory[2] |= data;
+ 367              		.loc 1 177 22 view .LVU99
+ 368 0080 1B69     		ldr	r3, [r3, #16]
+ 369 0082 0DF10F02 		add	r2, sp, #15
+ 370 0086 4821     		movs	r1, #72
+ 371 0088 2046     		mov	r0, r4
+ 372 008a 9847     		blx	r3
+ 373              	.LVL33:
+ 178:task/attitude/src/mpu6050.c ****     //加速度计X轴
+ 374              		.loc 1 178 5 is_stmt 1 view .LVU100
+ 178:task/attitude/src/mpu6050.c ****     //加速度计X轴
+ 375              		.loc 1 178 19 is_stmt 0 view .LVU101
+ 376 008c 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 377 0090 E289     		ldrh	r2, [r4, #14]
+ 378 0092 1343     		orrs	r3, r3, r2
+ 379 0094 E381     		strh	r3, [r4, #14]	@ movhi
+ 180:task/attitude/src/mpu6050.c ****     self->accel[0] = data << 8;
+ 380              		.loc 1 180 5 is_stmt 1 view .LVU102
+ 180:task/attitude/src/mpu6050.c ****     self->accel[0] = data << 8;
+ 381              		.loc 1 180 10 is_stmt 0 view .LVU103
+ 382 0096 2368     		ldr	r3, [r4]
+ 180:task/attitude/src/mpu6050.c ****     self->accel[0] = data << 8;
+ 383              		.loc 1 180 22 view .LVU104
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 13
+
+
+ 384 0098 1B69     		ldr	r3, [r3, #16]
+ 385 009a 0DF10F02 		add	r2, sp, #15
+ 386 009e 3B21     		movs	r1, #59
+ 387 00a0 2046     		mov	r0, r4
+ 388 00a2 9847     		blx	r3
+ 389              	.LVL34:
+ 181:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_XOUT_L, &data);
+ 390              		.loc 1 181 5 is_stmt 1 view .LVU105
+ 181:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_XOUT_L, &data);
+ 391              		.loc 1 181 27 is_stmt 0 view .LVU106
+ 392 00a4 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 393 00a8 1B02     		lsls	r3, r3, #8
+ 181:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_XOUT_L, &data);
+ 394              		.loc 1 181 20 view .LVU107
+ 395 00aa 2382     		strh	r3, [r4, #16]	@ movhi
+ 182:task/attitude/src/mpu6050.c ****     self->accel[0] |= data;
+ 396              		.loc 1 182 5 is_stmt 1 view .LVU108
+ 182:task/attitude/src/mpu6050.c ****     self->accel[0] |= data;
+ 397              		.loc 1 182 10 is_stmt 0 view .LVU109
+ 398 00ac 2368     		ldr	r3, [r4]
+ 182:task/attitude/src/mpu6050.c ****     self->accel[0] |= data;
+ 399              		.loc 1 182 22 view .LVU110
+ 400 00ae 1B69     		ldr	r3, [r3, #16]
+ 401 00b0 0DF10F02 		add	r2, sp, #15
+ 402 00b4 3C21     		movs	r1, #60
+ 403 00b6 2046     		mov	r0, r4
+ 404 00b8 9847     		blx	r3
+ 405              	.LVL35:
+ 183:task/attitude/src/mpu6050.c ****     //加速度计Y轴
+ 406              		.loc 1 183 5 is_stmt 1 view .LVU111
+ 183:task/attitude/src/mpu6050.c ****     //加速度计Y轴
+ 407              		.loc 1 183 20 is_stmt 0 view .LVU112
+ 408 00ba 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 409 00be 228A     		ldrh	r2, [r4, #16]
+ 410 00c0 1343     		orrs	r3, r3, r2
+ 411 00c2 2382     		strh	r3, [r4, #16]	@ movhi
+ 185:task/attitude/src/mpu6050.c ****     self->accel[1] = data << 8;
+ 412              		.loc 1 185 5 is_stmt 1 view .LVU113
+ 185:task/attitude/src/mpu6050.c ****     self->accel[1] = data << 8;
+ 413              		.loc 1 185 10 is_stmt 0 view .LVU114
+ 414 00c4 2368     		ldr	r3, [r4]
+ 185:task/attitude/src/mpu6050.c ****     self->accel[1] = data << 8;
+ 415              		.loc 1 185 22 view .LVU115
+ 416 00c6 1B69     		ldr	r3, [r3, #16]
+ 417 00c8 0DF10F02 		add	r2, sp, #15
+ 418 00cc 3D21     		movs	r1, #61
+ 419 00ce 2046     		mov	r0, r4
+ 420 00d0 9847     		blx	r3
+ 421              	.LVL36:
+ 186:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_YOUT_L, &data);
+ 422              		.loc 1 186 5 is_stmt 1 view .LVU116
+ 186:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_YOUT_L, &data);
+ 423              		.loc 1 186 27 is_stmt 0 view .LVU117
+ 424 00d2 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 425 00d6 1B02     		lsls	r3, r3, #8
+ 186:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_YOUT_L, &data);
+ 426              		.loc 1 186 20 view .LVU118
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 14
+
+
+ 427 00d8 6382     		strh	r3, [r4, #18]	@ movhi
+ 187:task/attitude/src/mpu6050.c ****     self->accel[1] |= data;
+ 428              		.loc 1 187 5 is_stmt 1 view .LVU119
+ 187:task/attitude/src/mpu6050.c ****     self->accel[1] |= data;
+ 429              		.loc 1 187 10 is_stmt 0 view .LVU120
+ 430 00da 2368     		ldr	r3, [r4]
+ 187:task/attitude/src/mpu6050.c ****     self->accel[1] |= data;
+ 431              		.loc 1 187 22 view .LVU121
+ 432 00dc 1B69     		ldr	r3, [r3, #16]
+ 433 00de 0DF10F02 		add	r2, sp, #15
+ 434 00e2 3E21     		movs	r1, #62
+ 435 00e4 2046     		mov	r0, r4
+ 436 00e6 9847     		blx	r3
+ 437              	.LVL37:
+ 188:task/attitude/src/mpu6050.c ****     //加速度计z轴
+ 438              		.loc 1 188 5 is_stmt 1 view .LVU122
+ 188:task/attitude/src/mpu6050.c ****     //加速度计z轴
+ 439              		.loc 1 188 20 is_stmt 0 view .LVU123
+ 440 00e8 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 441 00ec 628A     		ldrh	r2, [r4, #18]
+ 442 00ee 1343     		orrs	r3, r3, r2
+ 443 00f0 6382     		strh	r3, [r4, #18]	@ movhi
+ 190:task/attitude/src/mpu6050.c ****     self->accel[2] = data << 8;
+ 444              		.loc 1 190 5 is_stmt 1 view .LVU124
+ 190:task/attitude/src/mpu6050.c ****     self->accel[2] = data << 8;
+ 445              		.loc 1 190 10 is_stmt 0 view .LVU125
+ 446 00f2 2368     		ldr	r3, [r4]
+ 190:task/attitude/src/mpu6050.c ****     self->accel[2] = data << 8;
+ 447              		.loc 1 190 22 view .LVU126
+ 448 00f4 1B69     		ldr	r3, [r3, #16]
+ 449 00f6 0DF10F02 		add	r2, sp, #15
+ 450 00fa 3F21     		movs	r1, #63
+ 451 00fc 2046     		mov	r0, r4
+ 452 00fe 9847     		blx	r3
+ 453              	.LVL38:
+ 191:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_ZOUT_L, &data);
+ 454              		.loc 1 191 5 is_stmt 1 view .LVU127
+ 191:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_ZOUT_L, &data);
+ 455              		.loc 1 191 27 is_stmt 0 view .LVU128
+ 456 0100 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 457 0104 1B02     		lsls	r3, r3, #8
+ 191:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_ACCEL_ZOUT_L, &data);
+ 458              		.loc 1 191 20 view .LVU129
+ 459 0106 A382     		strh	r3, [r4, #20]	@ movhi
+ 192:task/attitude/src/mpu6050.c ****     self->accel[2] |= data;
+ 460              		.loc 1 192 5 is_stmt 1 view .LVU130
+ 192:task/attitude/src/mpu6050.c ****     self->accel[2] |= data;
+ 461              		.loc 1 192 10 is_stmt 0 view .LVU131
+ 462 0108 2368     		ldr	r3, [r4]
+ 192:task/attitude/src/mpu6050.c ****     self->accel[2] |= data;
+ 463              		.loc 1 192 22 view .LVU132
+ 464 010a 1B69     		ldr	r3, [r3, #16]
+ 465 010c 0DF10F02 		add	r2, sp, #15
+ 466 0110 4021     		movs	r1, #64
+ 467 0112 2046     		mov	r0, r4
+ 468 0114 9847     		blx	r3
+ 469              	.LVL39:
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 15
+
+
+ 193:task/attitude/src/mpu6050.c ****     //温度
+ 470              		.loc 1 193 5 is_stmt 1 view .LVU133
+ 193:task/attitude/src/mpu6050.c ****     //温度
+ 471              		.loc 1 193 20 is_stmt 0 view .LVU134
+ 472 0116 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 473 011a A28A     		ldrh	r2, [r4, #20]
+ 474 011c 1343     		orrs	r3, r3, r2
+ 475 011e A382     		strh	r3, [r4, #20]	@ movhi
+ 195:task/attitude/src/mpu6050.c ****     temp = data << 8;
+ 476              		.loc 1 195 5 is_stmt 1 view .LVU135
+ 195:task/attitude/src/mpu6050.c ****     temp = data << 8;
+ 477              		.loc 1 195 10 is_stmt 0 view .LVU136
+ 478 0120 2368     		ldr	r3, [r4]
+ 195:task/attitude/src/mpu6050.c ****     temp = data << 8;
+ 479              		.loc 1 195 22 view .LVU137
+ 480 0122 1B69     		ldr	r3, [r3, #16]
+ 481 0124 0DF10F02 		add	r2, sp, #15
+ 482 0128 4121     		movs	r1, #65
+ 483 012a 2046     		mov	r0, r4
+ 484 012c 9847     		blx	r3
+ 485              	.LVL40:
+ 196:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_TEMP_OUT_L, &data);
+ 486              		.loc 1 196 5 is_stmt 1 view .LVU138
+ 196:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_TEMP_OUT_L, &data);
+ 487              		.loc 1 196 17 is_stmt 0 view .LVU139
+ 488 012e 9DF80F50 		ldrb	r5, [sp, #15]	@ zero_extendqisi2
+ 196:task/attitude/src/mpu6050.c ****     (self->mpuFunList->ReadByte)(self, MPU6050_RA_TEMP_OUT_L, &data);
+ 489              		.loc 1 196 10 view .LVU140
+ 490 0132 2D02     		lsls	r5, r5, #8
+ 491              	.LVL41:
+ 197:task/attitude/src/mpu6050.c ****     temp |= data;
+ 492              		.loc 1 197 5 is_stmt 1 view .LVU141
+ 197:task/attitude/src/mpu6050.c ****     temp |= data;
+ 493              		.loc 1 197 10 is_stmt 0 view .LVU142
+ 494 0134 2368     		ldr	r3, [r4]
+ 197:task/attitude/src/mpu6050.c ****     temp |= data;
+ 495              		.loc 1 197 22 view .LVU143
+ 496 0136 1B69     		ldr	r3, [r3, #16]
+ 497 0138 0DF10F02 		add	r2, sp, #15
+ 498 013c 4221     		movs	r1, #66
+ 499 013e 2046     		mov	r0, r4
+ 500 0140 9847     		blx	r3
+ 501              	.LVL42:
+ 198:task/attitude/src/mpu6050.c ****     self->temperature = (double)temp / MPU6050_Q16;
+ 502              		.loc 1 198 5 is_stmt 1 view .LVU144
+ 198:task/attitude/src/mpu6050.c ****     self->temperature = (double)temp / MPU6050_Q16;
+ 503              		.loc 1 198 10 is_stmt 0 view .LVU145
+ 504 0142 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 505 0146 2B43     		orrs	r3, r3, r5
+ 506 0148 07EE103A 		vmov	s14, r3	@ int
+ 507              	.LVL43:
+ 199:task/attitude/src/mpu6050.c ****     //获取时间戳
+ 508              		.loc 1 199 5 is_stmt 1 view .LVU146
+ 199:task/attitude/src/mpu6050.c ****     //获取时间戳
+ 509              		.loc 1 199 25 is_stmt 0 view .LVU147
+ 510 014c B8EEC77B 		vcvt.f64.s32	d7, s14
+ 199:task/attitude/src/mpu6050.c ****     //获取时间戳
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 16
+
+
+ 511              		.loc 1 199 38 view .LVU148
+ 512 0150 9FED236B 		vldr.64	d6, .L26
+ 513 0154 27EE067B 		vmul.f64	d7, d7, d6
+ 199:task/attitude/src/mpu6050.c ****     //获取时间戳
+ 514              		.loc 1 199 23 view .LVU149
+ 515 0158 84ED107B 		vstr.64	d7, [r4, #64]
+ 201:task/attitude/src/mpu6050.c ****     return (unsigned char)status;
+ 516              		.loc 1 201 5 is_stmt 1 view .LVU150
+ 201:task/attitude/src/mpu6050.c ****     return (unsigned char)status;
+ 517              		.loc 1 201 10 is_stmt 0 view .LVU151
+ 518 015c 2046     		mov	r0, r4
+ 519 015e 50F8383B 		ldr	r3, [r0], #56
+ 520              	.LVL44:
+ 201:task/attitude/src/mpu6050.c ****     return (unsigned char)status;
+ 521              		.loc 1 201 22 view .LVU152
+ 522 0162 5B69     		ldr	r3, [r3, #20]
+ 523 0164 9847     		blx	r3
+ 524              	.LVL45:
+ 202:task/attitude/src/mpu6050.c **** }
+ 525              		.loc 1 202 5 is_stmt 1 view .LVU153
+ 202:task/attitude/src/mpu6050.c **** }
+ 526              		.loc 1 202 12 is_stmt 0 view .LVU154
+ 527 0166 0020     		movs	r0, #0
+ 528              	.LVL46:
+ 529              	.L22:
+ 203:task/attitude/src/mpu6050.c **** 
+ 530              		.loc 1 203 1 view .LVU155
+ 531 0168 05B0     		add	sp, sp, #20
+ 532              	.LCFI6:
+ 533              		.cfi_remember_state
+ 534              		.cfi_def_cfa_offset 12
+ 535              		@ sp needed
+ 536 016a 30BD     		pop	{r4, r5, pc}
+ 537              	.LVL47:
+ 538              	.L25:
+ 539              	.LCFI7:
+ 540              		.cfi_restore_state
+ 153:task/attitude/src/mpu6050.c ****         status = dmp_read_fifo(self->gory, self->accel, tmp_quat, &(self->timestamp), &sensors, &mo
+ 541              		.loc 1 153 9 is_stmt 1 view .LVU156
+ 542 016c 00F13805 		add	r5, r0, #56
+ 543 0170 2846     		mov	r0, r5
+ 544              	.LVL48:
+ 153:task/attitude/src/mpu6050.c ****         status = dmp_read_fifo(self->gory, self->accel, tmp_quat, &(self->timestamp), &sensors, &mo
+ 545              		.loc 1 153 9 is_stmt 0 view .LVU157
+ 546 0172 FFF7FEFF 		bl	get_tick_count
+ 547              	.LVL49:
+ 154:task/attitude/src/mpu6050.c ****         if (status)
+ 548              		.loc 1 154 9 is_stmt 1 view .LVU158
+ 154:task/attitude/src/mpu6050.c ****         if (status)
+ 549              		.loc 1 154 18 is_stmt 0 view .LVU159
+ 550 0176 0DF10E03 		add	r3, sp, #14
+ 551 017a 0193     		str	r3, [sp, #4]
+ 552 017c 1C4B     		ldr	r3, .L26+16
+ 553 017e 0093     		str	r3, [sp]
+ 554 0180 2B46     		mov	r3, r5
+ 555 0182 1C4A     		ldr	r2, .L26+20
+ 556 0184 04F11001 		add	r1, r4, #16
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 17
+
+
+ 557 0188 04F10A00 		add	r0, r4, #10
+ 558 018c FFF7FEFF 		bl	dmp_read_fifo
+ 559              	.LVL50:
+ 155:task/attitude/src/mpu6050.c ****             return -1;
+ 560              		.loc 1 155 9 is_stmt 1 view .LVU160
+ 155:task/attitude/src/mpu6050.c ****             return -1;
+ 561              		.loc 1 155 12 is_stmt 0 view .LVU161
+ 562 0190 20BB     		cbnz	r0, .L23
+ 157:task/attitude/src/mpu6050.c ****         self->quat[1] = tmp_quat[1] / MPU6050_Q30;
+ 563              		.loc 1 157 9 is_stmt 1 view .LVU162
+ 157:task/attitude/src/mpu6050.c ****         self->quat[1] = tmp_quat[1] / MPU6050_Q30;
+ 564              		.loc 1 157 33 is_stmt 0 view .LVU163
+ 565 0192 184A     		ldr	r2, .L26+20
+ 157:task/attitude/src/mpu6050.c ****         self->quat[1] = tmp_quat[1] / MPU6050_Q30;
+ 566              		.loc 1 157 37 view .LVU164
+ 567 0194 D2ED007A 		vldr.32	s15, [r2]	@ int
+ 568 0198 B8EEE76B 		vcvt.f64.s32	d6, s15
+ 569 019c 9FED125B 		vldr.64	d5, .L26+8
+ 570 01a0 26EE056B 		vmul.f64	d6, d6, d5
+ 157:task/attitude/src/mpu6050.c ****         self->quat[1] = tmp_quat[1] / MPU6050_Q30;
+ 571              		.loc 1 157 23 view .LVU165
+ 572 01a4 84ED066B 		vstr.64	d6, [r4, #24]
+ 158:task/attitude/src/mpu6050.c ****         self->quat[2] = tmp_quat[2] / MPU6050_Q30;
+ 573              		.loc 1 158 9 is_stmt 1 view .LVU166
+ 158:task/attitude/src/mpu6050.c ****         self->quat[2] = tmp_quat[2] / MPU6050_Q30;
+ 574              		.loc 1 158 37 is_stmt 0 view .LVU167
+ 575 01a8 D2ED017A 		vldr.32	s15, [r2, #4]	@ int
+ 576 01ac B8EEE76B 		vcvt.f64.s32	d6, s15
+ 577 01b0 26EE056B 		vmul.f64	d6, d6, d5
+ 158:task/attitude/src/mpu6050.c ****         self->quat[2] = tmp_quat[2] / MPU6050_Q30;
+ 578              		.loc 1 158 23 view .LVU168
+ 579 01b4 84ED086B 		vstr.64	d6, [r4, #32]
+ 159:task/attitude/src/mpu6050.c ****         self->quat[3] = tmp_quat[3] / MPU6050_Q30;
+ 580              		.loc 1 159 9 is_stmt 1 view .LVU169
+ 159:task/attitude/src/mpu6050.c ****         self->quat[3] = tmp_quat[3] / MPU6050_Q30;
+ 581              		.loc 1 159 37 is_stmt 0 view .LVU170
+ 582 01b8 D2ED027A 		vldr.32	s15, [r2, #8]	@ int
+ 583 01bc B8EEE76B 		vcvt.f64.s32	d6, s15
+ 584 01c0 26EE056B 		vmul.f64	d6, d6, d5
+ 159:task/attitude/src/mpu6050.c ****         self->quat[3] = tmp_quat[3] / MPU6050_Q30;
+ 585              		.loc 1 159 23 view .LVU171
+ 586 01c4 84ED0A6B 		vstr.64	d6, [r4, #40]
+ 160:task/attitude/src/mpu6050.c ****         return status;
+ 587              		.loc 1 160 9 is_stmt 1 view .LVU172
+ 160:task/attitude/src/mpu6050.c ****         return status;
+ 588              		.loc 1 160 33 is_stmt 0 view .LVU173
+ 589 01c8 92ED037A 		vldr.32	s14, [r2, #12]	@ int
+ 160:task/attitude/src/mpu6050.c ****         return status;
+ 590              		.loc 1 160 37 view .LVU174
+ 591 01cc B8EEC77B 		vcvt.f64.s32	d7, s14
+ 592 01d0 27EE057B 		vmul.f64	d7, d7, d5
+ 160:task/attitude/src/mpu6050.c ****         return status;
+ 593              		.loc 1 160 23 view .LVU175
+ 594 01d4 84ED0C7B 		vstr.64	d7, [r4, #48]
+ 161:task/attitude/src/mpu6050.c ****     }
+ 595              		.loc 1 161 9 is_stmt 1 view .LVU176
+ 161:task/attitude/src/mpu6050.c ****     }
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 18
+
+
+ 596              		.loc 1 161 16 is_stmt 0 view .LVU177
+ 597 01d8 C0B2     		uxtb	r0, r0
+ 598              	.LVL51:
+ 161:task/attitude/src/mpu6050.c ****     }
+ 599              		.loc 1 161 16 view .LVU178
+ 600 01da C5E7     		b	.L22
+ 601              	.LVL52:
+ 602              	.L23:
+ 156:task/attitude/src/mpu6050.c ****         self->quat[0] = tmp_quat[0] / MPU6050_Q30;
+ 603              		.loc 1 156 20 view .LVU179
+ 604 01dc FF20     		movs	r0, #255
+ 605              	.LVL53:
+ 156:task/attitude/src/mpu6050.c ****         self->quat[0] = tmp_quat[0] / MPU6050_Q30;
+ 606              		.loc 1 156 20 view .LVU180
+ 607 01de C3E7     		b	.L22
+ 608              	.L27:
+ 609              		.align	3
+ 610              	.L26:
+ 611 01e0 00000000 		.word	0
+ 612 01e4 0000F03E 		.word	1055916032
+ 613 01e8 00000000 		.word	0
+ 614 01ec 0000103E 		.word	1041235968
+ 615 01f0 00000000 		.word	.LANCHOR1
+ 616 01f4 00000000 		.word	.LANCHOR0
+ 617              		.cfi_endproc
+ 618              	.LFE148:
+ 620              		.section	.text.inv_orientation_matrix_to_scalar,"ax",%progbits
+ 621              		.align	1
+ 622              		.global	inv_orientation_matrix_to_scalar
+ 623              		.syntax unified
+ 624              		.thumb
+ 625              		.thumb_func
+ 626              		.fpu fpv5-d16
+ 628              	inv_orientation_matrix_to_scalar:
+ 629              	.LVL54:
+ 630              	.LFB146:
+  44:task/attitude/src/mpu6050.c **** 
+ 631              		.loc 1 44 1 is_stmt 1 view -0
+ 632              		.cfi_startproc
+ 633              		@ args = 0, pretend = 0, frame = 0
+ 634              		@ frame_needed = 0, uses_anonymous_args = 0
+  44:task/attitude/src/mpu6050.c **** 
+ 635              		.loc 1 44 1 is_stmt 0 view .LVU182
+ 636 0000 38B5     		push	{r3, r4, r5, lr}
+ 637              	.LCFI8:
+ 638              		.cfi_def_cfa_offset 16
+ 639              		.cfi_offset 3, -16
+ 640              		.cfi_offset 4, -12
+ 641              		.cfi_offset 5, -8
+ 642              		.cfi_offset 14, -4
+ 643 0002 0546     		mov	r5, r0
+  46:task/attitude/src/mpu6050.c **** 
+ 644              		.loc 1 46 5 is_stmt 1 view .LVU183
+  57:task/attitude/src/mpu6050.c ****     scalar |= inv_row_2_scale(mtx + 3) << 3;
+ 645              		.loc 1 57 5 view .LVU184
+  57:task/attitude/src/mpu6050.c ****     scalar |= inv_row_2_scale(mtx + 3) << 3;
+ 646              		.loc 1 57 14 is_stmt 0 view .LVU185
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 19
+
+
+ 647 0004 FFF7FEFF 		bl	inv_row_2_scale
+ 648              	.LVL55:
+  57:task/attitude/src/mpu6050.c ****     scalar |= inv_row_2_scale(mtx + 3) << 3;
+ 649              		.loc 1 57 14 view .LVU186
+ 650 0008 0446     		mov	r4, r0
+ 651              	.LVL56:
+  58:task/attitude/src/mpu6050.c ****     scalar |= inv_row_2_scale(mtx + 6) << 6;
+ 652              		.loc 1 58 5 is_stmt 1 view .LVU187
+  58:task/attitude/src/mpu6050.c ****     scalar |= inv_row_2_scale(mtx + 6) << 6;
+ 653              		.loc 1 58 15 is_stmt 0 view .LVU188
+ 654 000a E81C     		adds	r0, r5, #3
+ 655 000c FFF7FEFF 		bl	inv_row_2_scale
+ 656              	.LVL57:
+  58:task/attitude/src/mpu6050.c ****     scalar |= inv_row_2_scale(mtx + 6) << 6;
+ 657              		.loc 1 58 12 view .LVU189
+ 658 0010 44EAC004 		orr	r4, r4, r0, lsl #3
+ 659              	.LVL58:
+  58:task/attitude/src/mpu6050.c ****     scalar |= inv_row_2_scale(mtx + 6) << 6;
+ 660              		.loc 1 58 12 view .LVU190
+ 661 0014 24B2     		sxth	r4, r4
+ 662              	.LVL59:
+  59:task/attitude/src/mpu6050.c **** 
+ 663              		.loc 1 59 5 is_stmt 1 view .LVU191
+  59:task/attitude/src/mpu6050.c **** 
+ 664              		.loc 1 59 15 is_stmt 0 view .LVU192
+ 665 0016 A81D     		adds	r0, r5, #6
+ 666 0018 FFF7FEFF 		bl	inv_row_2_scale
+ 667              	.LVL60:
+  59:task/attitude/src/mpu6050.c **** 
+ 668              		.loc 1 59 12 view .LVU193
+ 669 001c 44EA8010 		orr	r0, r4, r0, lsl #6
+ 670              	.LVL61:
+  61:task/attitude/src/mpu6050.c **** }
+ 671              		.loc 1 61 5 is_stmt 1 view .LVU194
+  62:task/attitude/src/mpu6050.c **** 
+ 672              		.loc 1 62 1 is_stmt 0 view .LVU195
+ 673 0020 80B2     		uxth	r0, r0
+  62:task/attitude/src/mpu6050.c **** 
+ 674              		.loc 1 62 1 view .LVU196
+ 675 0022 38BD     		pop	{r3, r4, r5, pc}
+  62:task/attitude/src/mpu6050.c **** 
+ 676              		.loc 1 62 1 view .LVU197
+ 677              		.cfi_endproc
+ 678              	.LFE146:
+ 680              		.section	.text._mpu6050Init,"ax",%progbits
+ 681              		.align	1
+ 682              		.syntax unified
+ 683              		.thumb
+ 684              		.thumb_func
+ 685              		.fpu fpv5-d16
+ 687              	_mpu6050Init:
+ 688              	.LVL62:
+ 689              	.LFB147:
+  73:task/attitude/src/mpu6050.c ****     unsigned char data;
+ 690              		.loc 1 73 1 is_stmt 1 view -0
+ 691              		.cfi_startproc
+ 692              		@ args = 0, pretend = 0, frame = 16
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 20
+
+
+ 693              		@ frame_needed = 0, uses_anonymous_args = 0
+  73:task/attitude/src/mpu6050.c ****     unsigned char data;
+ 694              		.loc 1 73 1 is_stmt 0 view .LVU199
+ 695 0000 30B5     		push	{r4, r5, lr}
+ 696              	.LCFI9:
+ 697              		.cfi_def_cfa_offset 12
+ 698              		.cfi_offset 4, -12
+ 699              		.cfi_offset 5, -8
+ 700              		.cfi_offset 14, -4
+ 701 0002 85B0     		sub	sp, sp, #20
+ 702              	.LCFI10:
+ 703              		.cfi_def_cfa_offset 32
+ 704 0004 0446     		mov	r4, r0
+  74:task/attitude/src/mpu6050.c **** 
+ 705              		.loc 1 74 5 is_stmt 1 view .LVU200
+  76:task/attitude/src/mpu6050.c ****     struct int_param_s int_param;
+ 706              		.loc 1 76 5 view .LVU201
+  77:task/attitude/src/mpu6050.c ****     //延迟一会
+ 707              		.loc 1 77 5 view .LVU202
+  79:task/attitude/src/mpu6050.c ****     //如果使用dmp
+ 708              		.loc 1 79 5 view .LVU203
+  79:task/attitude/src/mpu6050.c ****     //如果使用dmp
+ 709              		.loc 1 79 10 is_stmt 0 view .LVU204
+ 710 0006 0368     		ldr	r3, [r0]
+  79:task/attitude/src/mpu6050.c ****     //如果使用dmp
+ 711              		.loc 1 79 22 view .LVU205
+ 712 0008 9B68     		ldr	r3, [r3, #8]
+ 713 000a 0A20     		movs	r0, #10
+ 714              	.LVL63:
+  79:task/attitude/src/mpu6050.c ****     //如果使用dmp
+ 715              		.loc 1 79 22 view .LVU206
+ 716 000c 9847     		blx	r3
+ 717              	.LVL64:
+  81:task/attitude/src/mpu6050.c ****     {
+ 718              		.loc 1 81 5 is_stmt 1 view .LVU207
+  81:task/attitude/src/mpu6050.c ****     {
+ 719              		.loc 1 81 13 is_stmt 0 view .LVU208
+ 720 000e 6379     		ldrb	r3, [r4, #5]	@ zero_extendqisi2
+  81:task/attitude/src/mpu6050.c ****     {
+ 721              		.loc 1 81 8 view .LVU209
+ 722 0010 002B     		cmp	r3, #0
+ 723 0012 48D1     		bne	.L40
+ 109:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_PWR_MGMT_1, &data))
+ 724              		.loc 1 109 5 is_stmt 1 view .LVU210
+ 109:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_PWR_MGMT_1, &data))
+ 725              		.loc 1 109 10 is_stmt 0 view .LVU211
+ 726 0014 0023     		movs	r3, #0
+ 727 0016 8DF80F30 		strb	r3, [sp, #15]
+ 110:task/attitude/src/mpu6050.c ****         return -1;
+ 728              		.loc 1 110 5 is_stmt 1 view .LVU212
+ 110:task/attitude/src/mpu6050.c ****         return -1;
+ 729              		.loc 1 110 14 is_stmt 0 view .LVU213
+ 730 001a 2368     		ldr	r3, [r4]
+ 110:task/attitude/src/mpu6050.c ****         return -1;
+ 731              		.loc 1 110 26 view .LVU214
+ 732 001c DB68     		ldr	r3, [r3, #12]
+ 733 001e 0DF10F02 		add	r2, sp, #15
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 21
+
+
+ 734 0022 6B21     		movs	r1, #107
+ 735 0024 2046     		mov	r0, r4
+ 736 0026 9847     		blx	r3
+ 737              	.LVL65:
+ 110:task/attitude/src/mpu6050.c ****         return -1;
+ 738              		.loc 1 110 8 view .LVU215
+ 739 0028 0028     		cmp	r0, #0
+ 740 002a 62D1     		bne	.L34
+ 113:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_GYRO_CONFIG, &data))
+ 741              		.loc 1 113 5 is_stmt 1 view .LVU216
+ 113:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_GYRO_CONFIG, &data))
+ 742              		.loc 1 113 10 is_stmt 0 view .LVU217
+ 743 002c 1823     		movs	r3, #24
+ 744 002e 8DF80F30 		strb	r3, [sp, #15]
+ 114:task/attitude/src/mpu6050.c ****         return -2;
+ 745              		.loc 1 114 5 is_stmt 1 view .LVU218
+ 114:task/attitude/src/mpu6050.c ****         return -2;
+ 746              		.loc 1 114 14 is_stmt 0 view .LVU219
+ 747 0032 2368     		ldr	r3, [r4]
+ 114:task/attitude/src/mpu6050.c ****         return -2;
+ 748              		.loc 1 114 26 view .LVU220
+ 749 0034 DB68     		ldr	r3, [r3, #12]
+ 750 0036 0DF10F02 		add	r2, sp, #15
+ 751 003a 1B21     		movs	r1, #27
+ 752 003c 2046     		mov	r0, r4
+ 753 003e 9847     		blx	r3
+ 754              	.LVL66:
+ 114:task/attitude/src/mpu6050.c ****         return -2;
+ 755              		.loc 1 114 8 view .LVU221
+ 756 0040 0028     		cmp	r0, #0
+ 757 0042 59D1     		bne	.L35
+ 117:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_ACCEL_CONFIG, &data))
+ 758              		.loc 1 117 5 is_stmt 1 view .LVU222
+ 117:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_ACCEL_CONFIG, &data))
+ 759              		.loc 1 117 10 is_stmt 0 view .LVU223
+ 760 0044 1823     		movs	r3, #24
+ 761 0046 8DF80F30 		strb	r3, [sp, #15]
+ 118:task/attitude/src/mpu6050.c ****         return -3;
+ 762              		.loc 1 118 5 is_stmt 1 view .LVU224
+ 118:task/attitude/src/mpu6050.c ****         return -3;
+ 763              		.loc 1 118 14 is_stmt 0 view .LVU225
+ 764 004a 2368     		ldr	r3, [r4]
+ 118:task/attitude/src/mpu6050.c ****         return -3;
+ 765              		.loc 1 118 26 view .LVU226
+ 766 004c DB68     		ldr	r3, [r3, #12]
+ 767 004e 0DF10F02 		add	r2, sp, #15
+ 768 0052 1C21     		movs	r1, #28
+ 769 0054 2046     		mov	r0, r4
+ 770 0056 9847     		blx	r3
+ 771              	.LVL67:
+ 118:task/attitude/src/mpu6050.c ****         return -3;
+ 772              		.loc 1 118 8 view .LVU227
+ 773 0058 0028     		cmp	r0, #0
+ 774 005a 50D1     		bne	.L36
+ 121:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_LPF_CONFIG, &data))
+ 775              		.loc 1 121 5 is_stmt 1 view .LVU228
+ 121:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_LPF_CONFIG, &data))
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 22
+
+
+ 776              		.loc 1 121 10 is_stmt 0 view .LVU229
+ 777 005c 0123     		movs	r3, #1
+ 778 005e 8DF80F30 		strb	r3, [sp, #15]
+ 122:task/attitude/src/mpu6050.c ****         return -4;
+ 779              		.loc 1 122 5 is_stmt 1 view .LVU230
+ 122:task/attitude/src/mpu6050.c ****         return -4;
+ 780              		.loc 1 122 14 is_stmt 0 view .LVU231
+ 781 0062 2368     		ldr	r3, [r4]
+ 122:task/attitude/src/mpu6050.c ****         return -4;
+ 782              		.loc 1 122 26 view .LVU232
+ 783 0064 DB68     		ldr	r3, [r3, #12]
+ 784 0066 0DF10F02 		add	r2, sp, #15
+ 785 006a 1A21     		movs	r1, #26
+ 786 006c 2046     		mov	r0, r4
+ 787 006e 9847     		blx	r3
+ 788              	.LVL68:
+ 122:task/attitude/src/mpu6050.c ****         return -4;
+ 789              		.loc 1 122 8 view .LVU233
+ 790 0070 0028     		cmp	r0, #0
+ 791 0072 47D1     		bne	.L37
+ 125:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_SMPLRT_DIV, &data))
+ 792              		.loc 1 125 5 is_stmt 1 view .LVU234
+ 125:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_SMPLRT_DIV, &data))
+ 793              		.loc 1 125 23 is_stmt 0 view .LVU235
+ 794 0074 E288     		ldrh	r2, [r4, #6]
+ 125:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_SMPLRT_DIV, &data))
+ 795              		.loc 1 125 17 view .LVU236
+ 796 0076 4FF47A73 		mov	r3, #1000
+ 797 007a 93FBF2F3 		sdiv	r3, r3, r2
+ 125:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_SMPLRT_DIV, &data))
+ 798              		.loc 1 125 37 view .LVU237
+ 799 007e 013B     		subs	r3, r3, #1
+ 125:task/attitude/src/mpu6050.c ****     if ((self->mpuFunList->WriteByte)(self, MPU6050_RA_SMPLRT_DIV, &data))
+ 800              		.loc 1 125 10 view .LVU238
+ 801 0080 8DF80F30 		strb	r3, [sp, #15]
+ 126:task/attitude/src/mpu6050.c ****         return -5;
+ 802              		.loc 1 126 5 is_stmt 1 view .LVU239
+ 126:task/attitude/src/mpu6050.c ****         return -5;
+ 803              		.loc 1 126 14 is_stmt 0 view .LVU240
+ 804 0084 2368     		ldr	r3, [r4]
+ 126:task/attitude/src/mpu6050.c ****         return -5;
+ 805              		.loc 1 126 26 view .LVU241
+ 806 0086 DB68     		ldr	r3, [r3, #12]
+ 807 0088 0DF10F02 		add	r2, sp, #15
+ 808 008c 1921     		movs	r1, #25
+ 809 008e 2046     		mov	r0, r4
+ 810 0090 9847     		blx	r3
+ 811              	.LVL69:
+ 126:task/attitude/src/mpu6050.c ****         return -5;
+ 812              		.loc 1 126 8 view .LVU242
+ 813 0092 0546     		mov	r5, r0
+ 814 0094 0028     		cmp	r0, #0
+ 815 0096 38D1     		bne	.L38
+ 128:task/attitude/src/mpu6050.c ****     return 0;
+ 816              		.loc 1 128 5 is_stmt 1 view .LVU243
+ 128:task/attitude/src/mpu6050.c ****     return 0;
+ 817              		.loc 1 128 10 is_stmt 0 view .LVU244
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 23
+
+
+ 818 0098 2368     		ldr	r3, [r4]
+ 128:task/attitude/src/mpu6050.c ****     return 0;
+ 819              		.loc 1 128 22 view .LVU245
+ 820 009a 9B68     		ldr	r3, [r3, #8]
+ 821 009c 0A20     		movs	r0, #10
+ 822 009e 9847     		blx	r3
+ 823              	.LVL70:
+ 129:task/attitude/src/mpu6050.c **** }
+ 824              		.loc 1 129 5 is_stmt 1 view .LVU246
+ 825              	.L30:
+ 130:task/attitude/src/mpu6050.c **** 
+ 826              		.loc 1 130 1 is_stmt 0 view .LVU247
+ 827 00a0 2846     		mov	r0, r5
+ 828 00a2 05B0     		add	sp, sp, #20
+ 829              	.LCFI11:
+ 830              		.cfi_remember_state
+ 831              		.cfi_def_cfa_offset 12
+ 832              		@ sp needed
+ 833 00a4 30BD     		pop	{r4, r5, pc}
+ 834              	.LVL71:
+ 835              	.L40:
+ 836              	.LCFI12:
+ 837              		.cfi_restore_state
+ 838              	.LBB2:
+  83:task/attitude/src/mpu6050.c ****         {
+ 839              		.loc 1 83 9 is_stmt 1 view .LVU248
+  83:task/attitude/src/mpu6050.c ****         {
+ 840              		.loc 1 83 13 is_stmt 0 view .LVU249
+ 841 00a6 01A8     		add	r0, sp, #4
+ 842 00a8 FFF7FEFF 		bl	mpu_init
+ 843              	.LVL72:
+  83:task/attitude/src/mpu6050.c ****         {
+ 844              		.loc 1 83 12 view .LVU250
+ 845 00ac 0546     		mov	r5, r0
+ 846 00ae E8B9     		cbnz	r0, .L33
+  88:task/attitude/src/mpu6050.c ****         //使能accel和gyro的fifo
+ 847              		.loc 1 88 9 is_stmt 1 view .LVU251
+ 848 00b0 7820     		movs	r0, #120
+ 849 00b2 FFF7FEFF 		bl	mpu_set_sensors
+ 850              	.LVL73:
+  90:task/attitude/src/mpu6050.c ****         //设置采样率
+ 851              		.loc 1 90 9 view .LVU252
+ 852 00b6 7820     		movs	r0, #120
+ 853 00b8 FFF7FEFF 		bl	mpu_configure_fifo
+ 854              	.LVL74:
+  92:task/attitude/src/mpu6050.c ****         //获取时间戳
+ 855              		.loc 1 92 9 view .LVU253
+ 856 00bc E088     		ldrh	r0, [r4, #6]
+ 857 00be FFF7FEFF 		bl	mpu_set_sample_rate
+ 858              	.LVL75:
+  94:task/attitude/src/mpu6050.c ****         //加载dmp固件
+ 859              		.loc 1 94 9 view .LVU254
+ 860 00c2 02A8     		add	r0, sp, #8
+ 861 00c4 FFF7FEFF 		bl	get_tick_count
+ 862              	.LVL76:
+  96:task/attitude/src/mpu6050.c ****         dmp_set_orientation(
+ 863              		.loc 1 96 9 view .LVU255
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 24
+
+
+ 864 00c8 FFF7FEFF 		bl	dmp_load_motion_driver_firmware
+ 865              	.LVL77:
+  97:task/attitude/src/mpu6050.c ****             inv_orientation_matrix_to_scalar(gyro_pdata.orientation));
+ 866              		.loc 1 97 9 view .LVU256
+ 867 00cc 1048     		ldr	r0, .L41
+ 868 00ce FFF7FEFF 		bl	inv_orientation_matrix_to_scalar
+ 869              	.LVL78:
+ 870 00d2 FFF7FEFF 		bl	dmp_set_orientation
+ 871              	.LVL79:
+  99:task/attitude/src/mpu6050.c ****                                       DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP
+ 872              		.loc 1 99 9 view .LVU257
+ 102:task/attitude/src/mpu6050.c ****         dmp_set_fifo_rate(self->dmp_rate);
+ 873              		.loc 1 102 9 view .LVU258
+ 874 00d6 40F27310 		movw	r0, #371
+ 875 00da FFF7FEFF 		bl	dmp_enable_feature
+ 876              	.LVL80:
+ 103:task/attitude/src/mpu6050.c ****         mpu_set_dmp_state(1);
+ 877              		.loc 1 103 9 view .LVU259
+ 878 00de 2089     		ldrh	r0, [r4, #8]
+ 879 00e0 FFF7FEFF 		bl	dmp_set_fifo_rate
+ 880              	.LVL81:
+ 104:task/attitude/src/mpu6050.c ****         return 0;
+ 881              		.loc 1 104 9 view .LVU260
+ 882 00e4 0120     		movs	r0, #1
+ 883 00e6 FFF7FEFF 		bl	mpu_set_dmp_state
+ 884              	.LVL82:
+ 105:task/attitude/src/mpu6050.c ****     }
+ 885              		.loc 1 105 9 view .LVU261
+ 105:task/attitude/src/mpu6050.c ****     }
+ 886              		.loc 1 105 16 is_stmt 0 view .LVU262
+ 887 00ea D9E7     		b	.L30
+ 888              	.LVL83:
+ 889              	.L33:
+  85:task/attitude/src/mpu6050.c ****         }
+ 890              		.loc 1 85 20 view .LVU263
+ 891 00ec 4FF0FF35 		mov	r5, #-1
+ 892 00f0 D6E7     		b	.L30
+ 893              	.L34:
+ 894              	.LBE2:
+ 111:task/attitude/src/mpu6050.c ****     //设置陀螺仪量程为2000
+ 895              		.loc 1 111 16 view .LVU264
+ 896 00f2 4FF0FF35 		mov	r5, #-1
+ 897 00f6 D3E7     		b	.L30
+ 898              	.L35:
+ 115:task/attitude/src/mpu6050.c ****     //设置加速度计的量程为16g
+ 899              		.loc 1 115 16 view .LVU265
+ 900 00f8 6FF00105 		mvn	r5, #1
+ 901 00fc D0E7     		b	.L30
+ 902              	.L36:
+ 119:task/attitude/src/mpu6050.c ****     //数字低通滤波器1:188hz ;2:98hz; 3:42hz; 4:20hz; 5:10hz ;6:5hz
+ 903              		.loc 1 119 16 view .LVU266
+ 904 00fe 6FF00205 		mvn	r5, #2
+ 905 0102 CDE7     		b	.L30
+ 906              	.L37:
+ 123:task/attitude/src/mpu6050.c ****     //设置采样率rate data = 1000 / rate - 1;
+ 907              		.loc 1 123 16 view .LVU267
+ 908 0104 6FF00305 		mvn	r5, #3
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 25
+
+
+ 909 0108 CAE7     		b	.L30
+ 910              	.L38:
+ 127:task/attitude/src/mpu6050.c ****     (self->mpuFunList->mpu_delay)(10);
+ 911              		.loc 1 127 16 view .LVU268
+ 912 010a 6FF00405 		mvn	r5, #4
+ 913 010e C7E7     		b	.L30
+ 914              	.L42:
+ 915              		.align	2
+ 916              	.L41:
+ 917 0110 00000000 		.word	.LANCHOR2
+ 918              		.cfi_endproc
+ 919              	.LFE147:
+ 921              		.section	.text.MPU6050_Self_Creat,"ax",%progbits
+ 922              		.align	1
+ 923              		.global	MPU6050_Self_Creat
+ 924              		.syntax unified
+ 925              		.thumb
+ 926              		.thumb_func
+ 927              		.fpu fpv5-d16
+ 929              	MPU6050_Self_Creat:
+ 930              	.LVL84:
+ 931              	.LFB153:
+ 240:task/attitude/src/mpu6050.c **** //mpu6050虚函数
+ 241:task/attitude/src/mpu6050.c **** static struct mpu6050Vtbl _mpu1FunList = {
+ 242:task/attitude/src/mpu6050.c ****     .Init = _mpu6050Init,
+ 243:task/attitude/src/mpu6050.c ****     .ReadData = _mpuReadData,
+ 244:task/attitude/src/mpu6050.c ****     .mpu_delay = _mpu_delay,
+ 245:task/attitude/src/mpu6050.c ****     .ReadByte = _ReadByte,
+ 246:task/attitude/src/mpu6050.c ****     .WriteByte = _WriteByte,
+ 247:task/attitude/src/mpu6050.c ****     .get_timestamp = _mpu_get_timestamp};
+ 248:task/attitude/src/mpu6050.c **** 
+ 249:task/attitude/src/mpu6050.c **** //接口函数
+ 250:task/attitude/src/mpu6050.c **** /*
+ 251:task/attitude/src/mpu6050.c ****  *功能:创建一个mpu6050对象
+ 252:task/attitude/src/mpu6050.c ****  *输入:
+ 253:task/attitude/src/mpu6050.c ****  devaddr:mpu6050设备地址
+ 254:task/attitude/src/mpu6050.c ****  isDMP:是否打开dmp(暂时没有)
+ 255:task/attitude/src/mpu6050.c ****  *输出:
+ 256:task/attitude/src/mpu6050.c ****  创建的mpu6050对象指针
+ 257:task/attitude/src/mpu6050.c ****  *
+ 258:task/attitude/src/mpu6050.c ****  */
+ 259:task/attitude/src/mpu6050.c **** mpu6050 *MPU6050_Self_Creat(char devaddr, _Bool isDMP)
+ 260:task/attitude/src/mpu6050.c **** {
+ 932              		.loc 1 260 1 is_stmt 1 view -0
+ 933              		.cfi_startproc
+ 934              		@ args = 0, pretend = 0, frame = 0
+ 935              		@ frame_needed = 0, uses_anonymous_args = 0
+ 936              		.loc 1 260 1 is_stmt 0 view .LVU270
+ 937 0000 38B5     		push	{r3, r4, r5, lr}
+ 938              	.LCFI13:
+ 939              		.cfi_def_cfa_offset 16
+ 940              		.cfi_offset 3, -16
+ 941              		.cfi_offset 4, -12
+ 942              		.cfi_offset 5, -8
+ 943              		.cfi_offset 14, -4
+ 944 0002 0546     		mov	r5, r0
+ 945 0004 0C46     		mov	r4, r1
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 26
+
+
+ 261:task/attitude/src/mpu6050.c ****     mpu6050 *self;
+ 946              		.loc 1 261 5 is_stmt 1 view .LVU271
+ 262:task/attitude/src/mpu6050.c ****     self = (mpu6050 *)pvPortMalloc(sizeof(mpu6050));
+ 947              		.loc 1 262 5 view .LVU272
+ 948              		.loc 1 262 23 is_stmt 0 view .LVU273
+ 949 0006 4820     		movs	r0, #72
+ 950              	.LVL85:
+ 951              		.loc 1 262 23 view .LVU274
+ 952 0008 FFF7FEFF 		bl	pvPortMalloc
+ 953              	.LVL86:
+ 263:task/attitude/src/mpu6050.c ****     self->devaddr = devaddr;
+ 954              		.loc 1 263 5 is_stmt 1 view .LVU275
+ 955              		.loc 1 263 19 is_stmt 0 view .LVU276
+ 956 000c 0571     		strb	r5, [r0, #4]
+ 264:task/attitude/src/mpu6050.c ****     self->isDMPon = isDMP;
+ 957              		.loc 1 264 5 is_stmt 1 view .LVU277
+ 958              		.loc 1 264 19 is_stmt 0 view .LVU278
+ 959 000e 4471     		strb	r4, [r0, #5]
+ 265:task/attitude/src/mpu6050.c ****     self->mpuFunList = &_mpu1FunList;
+ 960              		.loc 1 265 5 is_stmt 1 view .LVU279
+ 961              		.loc 1 265 22 is_stmt 0 view .LVU280
+ 962 0010 034A     		ldr	r2, .L45
+ 963 0012 0260     		str	r2, [r0]
+ 266:task/attitude/src/mpu6050.c ****     self->sample_rate = 1000;
+ 964              		.loc 1 266 5 is_stmt 1 view .LVU281
+ 965              		.loc 1 266 23 is_stmt 0 view .LVU282
+ 966 0014 4FF47A72 		mov	r2, #1000
+ 967 0018 C280     		strh	r2, [r0, #6]	@ movhi
+ 267:task/attitude/src/mpu6050.c ****     self->dmp_rate = 200;
+ 968              		.loc 1 267 5 is_stmt 1 view .LVU283
+ 969              		.loc 1 267 20 is_stmt 0 view .LVU284
+ 970 001a C822     		movs	r2, #200
+ 971 001c 0281     		strh	r2, [r0, #8]	@ movhi
+ 268:task/attitude/src/mpu6050.c **** 
+ 269:task/attitude/src/mpu6050.c ****     return self;
+ 972              		.loc 1 269 5 is_stmt 1 view .LVU285
+ 270:task/attitude/src/mpu6050.c **** }
+ 973              		.loc 1 270 1 is_stmt 0 view .LVU286
+ 974 001e 38BD     		pop	{r3, r4, r5, pc}
+ 975              	.L46:
+ 976              		.align	2
+ 977              	.L45:
+ 978 0020 00000000 		.word	.LANCHOR3
+ 979              		.cfi_endproc
+ 980              	.LFE153:
+ 982              		.section	.text.MPU6050_Self_Delete,"ax",%progbits
+ 983              		.align	1
+ 984              		.global	MPU6050_Self_Delete
+ 985              		.syntax unified
+ 986              		.thumb
+ 987              		.thumb_func
+ 988              		.fpu fpv5-d16
+ 990              	MPU6050_Self_Delete:
+ 991              	.LVL87:
+ 992              	.LFB154:
+ 271:task/attitude/src/mpu6050.c **** 
+ 272:task/attitude/src/mpu6050.c **** /*
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 27
+
+
+ 273:task/attitude/src/mpu6050.c ****  *功能:删除一个mpu6050对象
+ 274:task/attitude/src/mpu6050.c ****  */
+ 275:task/attitude/src/mpu6050.c **** void MPU6050_Self_Delete(mpu6050 *self)
+ 276:task/attitude/src/mpu6050.c **** {
+ 993              		.loc 1 276 1 is_stmt 1 view -0
+ 994              		.cfi_startproc
+ 995              		@ args = 0, pretend = 0, frame = 0
+ 996              		@ frame_needed = 0, uses_anonymous_args = 0
+ 997              		.loc 1 276 1 is_stmt 0 view .LVU288
+ 998 0000 08B5     		push	{r3, lr}
+ 999              	.LCFI14:
+ 1000              		.cfi_def_cfa_offset 8
+ 1001              		.cfi_offset 3, -8
+ 1002              		.cfi_offset 14, -4
+ 277:task/attitude/src/mpu6050.c ****     vPortFree(self);
+ 1003              		.loc 1 277 5 is_stmt 1 view .LVU289
+ 1004 0002 FFF7FEFF 		bl	vPortFree
+ 1005              	.LVL88:
+ 278:task/attitude/src/mpu6050.c **** }
+ 1006              		.loc 1 278 1 is_stmt 0 view .LVU290
+ 1007 0006 08BD     		pop	{r3, pc}
+ 1008              		.cfi_endproc
+ 1009              	.LFE154:
+ 1011              		.section	.bss.sensors.10001,"aw",%nobits
+ 1012              		.align	1
+ 1013              		.set	.LANCHOR1,. + 0
+ 1016              	sensors.10001:
+ 1017 0000 0000     		.space	2
+ 1018              		.section	.bss.tmp_quat.10003,"aw",%nobits
+ 1019              		.align	2
+ 1020              		.set	.LANCHOR0,. + 0
+ 1023              	tmp_quat.10003:
+ 1024 0000 00000000 		.space	16
+ 1024      00000000 
+ 1024      00000000 
+ 1024      00000000 
+ 1025              		.section	.data._mpu1FunList,"aw"
+ 1026              		.align	2
+ 1027              		.set	.LANCHOR3,. + 0
+ 1030              	_mpu1FunList:
+ 1031 0000 00000000 		.word	_mpu6050Init
+ 1032 0004 00000000 		.word	_mpuReadData
+ 1033 0008 00000000 		.word	_mpu_delay
+ 1034 000c 00000000 		.word	_WriteByte
+ 1035 0010 00000000 		.word	_ReadByte
+ 1036 0014 00000000 		.word	_mpu_get_timestamp
+ 1037              		.section	.data.gyro_pdata,"aw"
+ 1038              		.align	2
+ 1039              		.set	.LANCHOR2,. + 0
+ 1042              	gyro_pdata:
+ 1043 0000 01000000 		.ascii	"\001\000\000\000\001\000\000\000\001"
+ 1043      01000000 
+ 1043      01
+ 1044              		.text
+ 1045              	.Letext0:
+ 1046              		.file 2 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\arm-none-eabi\\include\\machine\\_def
+ 1047              		.file 3 "f:\\prosoft\\gcc_arm_none\\2019q4\\9 2019-q4-major\\arm-none-eabi\\include\\sys\\_stdint.
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 28
+
+
+ 1048              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 1049              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 1050              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h"
+ 1051              		.file 7 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h"
+ 1052              		.file 8 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h"
+ 1053              		.file 9 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_i2c.h"
+ 1054              		.file 10 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h"
+ 1055              		.file 11 "Inc/i2c.h"
+ 1056              		.file 12 "task/attitude/eMPL/inv_mpu.h"
+ 1057              		.file 13 "task/attitude/inc/mpu6050.h"
+ 1058              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/include/portable.h"
+ 1059              		.file 15 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 1060              		.file 16 "task/attitude/inc/bsp_i2c.h"
+ 1061              		.file 17 "task/attitude/eMPL/inv_mpu_dmp_motion_driver.h"
+ARM GAS  C:\Users\Legend\AppData\Local\Temp\cccElZBP.s 			page 29
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 mpu6050.c
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:17     .text.inv_row_2_scale:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:24     .text.inv_row_2_scale:00000000 inv_row_2_scale
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:113    .text._mpu_get_timestamp:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:119    .text._mpu_get_timestamp:00000000 _mpu_get_timestamp
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:148    .text._ReadByte:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:154    .text._ReadByte:00000000 _ReadByte
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:184    .text._WriteByte:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:190    .text._WriteByte:00000000 _WriteByte
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:220    .text._mpu_delay:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:226    .text._mpu_delay:00000000 _mpu_delay
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:248    .text._mpuReadData:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:254    .text._mpuReadData:00000000 _mpuReadData
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:611    .text._mpuReadData:000001e0 $d
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:621    .text.inv_orientation_matrix_to_scalar:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:628    .text.inv_orientation_matrix_to_scalar:00000000 inv_orientation_matrix_to_scalar
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:681    .text._mpu6050Init:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:687    .text._mpu6050Init:00000000 _mpu6050Init
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:917    .text._mpu6050Init:00000110 $d
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:922    .text.MPU6050_Self_Creat:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:929    .text.MPU6050_Self_Creat:00000000 MPU6050_Self_Creat
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:978    .text.MPU6050_Self_Creat:00000020 $d
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:983    .text.MPU6050_Self_Delete:00000000 $t
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:990    .text.MPU6050_Self_Delete:00000000 MPU6050_Self_Delete
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:1012   .bss.sensors.10001:00000000 $d
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:1016   .bss.sensors.10001:00000000 sensors.10001
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:1019   .bss.tmp_quat.10003:00000000 $d
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:1023   .bss.tmp_quat.10003:00000000 tmp_quat.10003
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:1026   .data._mpu1FunList:00000000 $d
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:1030   .data._mpu1FunList:00000000 _mpu1FunList
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:1038   .data.gyro_pdata:00000000 $d
+C:\Users\Legend\AppData\Local\Temp\cccElZBP.s:1042   .data.gyro_pdata:00000000 gyro_pdata
+
+UNDEFINED SYMBOLS
+xTaskGetTickCount
+Sensors_I2C_ReadRegister
+Sensors_I2C_WriteRegister
+vTaskDelay
+get_tick_count
+dmp_read_fifo
+mpu_init
+mpu_set_sensors
+mpu_configure_fifo
+mpu_set_sample_rate
+dmp_load_motion_driver_firmware
+dmp_set_orientation
+dmp_enable_feature
+dmp_set_fifo_rate
+mpu_set_dmp_state
+pvPortMalloc
+vPortFree
