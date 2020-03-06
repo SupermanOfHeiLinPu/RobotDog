@@ -1,0 +1,11 @@
+##ignore these files##
+*
+!*.ioc
+!*.md
+!/task
+!/task/*
+!/Src
+!/Src/*
+!/Inc
+!/Inc/*
+!.gitignore
