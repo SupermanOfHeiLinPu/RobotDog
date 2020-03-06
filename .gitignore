@@ -3,7 +3,7 @@
 !*.ioc
 !*.md
 !/task
-!/task/*
+!/task/**
 !/Src
 !/Src/*
 !/Inc
