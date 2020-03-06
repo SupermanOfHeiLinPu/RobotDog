@@ -9,6 +9,7 @@ typedef struct _attitude
 {
     mpu6050 *mpu6050self;
     struct attitudeVtbl *FunList;
+    double quat[4];
     double pitch;
     double roll;
     double yaw;
@@ -17,6 +18,7 @@ typedef struct _attitude
 struct attitudeVtbl
 {
     int (*bulid_euler_angles)(attitude *self);
+    int (*get_quaternion)(attitude *self);
 };
 
 //接口函数

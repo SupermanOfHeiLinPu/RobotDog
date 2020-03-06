@@ -160,5 +160,4 @@ struct mpu6050Vtbl
 //接口函数
 extern mpu6050 *MPU6050_Self_Creat(char devaddr, _Bool isDMP);
 extern void MPU6050_Self_Delete(mpu6050 *self);
-
 #endif

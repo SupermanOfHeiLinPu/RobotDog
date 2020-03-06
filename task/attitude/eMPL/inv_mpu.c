@@ -2968,7 +2968,7 @@ int mpu_load_firmware(unsigned short length, const unsigned char *firmware,
 
     if (!firmware)
         return -1;
-    /*for (ii = 0; ii < length; ii += this_write)
+    for (ii = 0; ii < length; ii += this_write)
     {
         this_write = min(LOAD_CHUNK, length - ii);
         if (mpu_write_mem(ii, this_write, (unsigned char *)&firmware[ii]))
@@ -2977,7 +2977,7 @@ int mpu_load_firmware(unsigned short length, const unsigned char *firmware,
             return -1;
         if (memcmp(firmware + ii, cur, this_write))
             return -2;
-    }*/
+    }
 
     /* Set program start address. */
     tmp[0] = start_addr >> 8;
