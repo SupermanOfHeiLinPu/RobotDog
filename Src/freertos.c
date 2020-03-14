@@ -27,6 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "attitude_task.h"
+#include "pca9685.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -99,6 +100,7 @@ void MX_FREERTOS_Init(void)
     /* add threads, ... */
     xAttitudeTsakCreat();
     AttitudeQueueCreat();
+    xpca_testTsakCreat();
     /* USER CODE END RTOS_THREADS */
 }
 

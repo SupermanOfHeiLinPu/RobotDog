@@ -32,9 +32,14 @@ static void AttitudeTsak()
         if (!isReady)
         {
             xQueueOverwrite(AttitudeQueue, &attitude_self);
+            printf("q0:%lf\n", attitude_self->quat[0]);
+            printf("q1:%lf\n", attitude_self->quat[1]);
+            printf("q2:%lf\n", attitude_self->quat[2]);
+            printf("q3:%lf\n", attitude_self->quat[3]);
             printf("pitch:%lf\n", attitude_self->pitch);
             printf("yaw:%lf\n", attitude_self->yaw);
             printf("roll:%lf\n", attitude_self->roll);
+            attitude_self->mpu6050self->mpuFunList->mpu_delay(5);
         }
     }
     attitude_self_delete(attitude_self);

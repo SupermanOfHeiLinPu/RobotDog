@@ -1,5 +1,4 @@
 #include "mpu6050.h"
-
 /**
 * mpu6050模块
 * 定义了mpu6050变量类型，使用示例：
@@ -187,10 +186,10 @@ static unsigned char _mpuReadData(mpu6050 *self)
         status = dmp_read_fifo(self->gory, self->accel, tmp_quat, &(self->timestamp), &sensors, &more);
         if (status)
             return -1;
-        self->quat[0] = tmp_quat[0] / MPU6050_Q30;
-        self->quat[1] = tmp_quat[1] / MPU6050_Q30;
-        self->quat[2] = tmp_quat[2] / MPU6050_Q30;
-        self->quat[3] = tmp_quat[3] / MPU6050_Q30;
+        self->quat[0] = (double)tmp_quat[0] / MPU6050_Q30;
+        self->quat[1] = (double)tmp_quat[1] / MPU6050_Q30;
+        self->quat[2] = (double)tmp_quat[2] / MPU6050_Q30;
+        self->quat[3] = (double)tmp_quat[3] / MPU6050_Q30;
 
         //温度
         (self->mpuFunList->ReadByte)(self, MPU6050_RA_TEMP_OUT_H, &data);
