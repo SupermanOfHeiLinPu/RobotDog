@@ -2,16 +2,39 @@
 
 #define PCA_Delay vTaskDelay
 
+/*
+ *功能：向pca9685写一字节
+ *输入：
+    mem_addr：寄存器地址
+    data：待写入数据的地址
+ *输出：无
+ *返回值：读写成功的状态
+ */
 int _pca9685_write_byte(char mem_addr, unsigned char *data)
 {
     return Sensors_I2C_WriteRegister(PCA9685_DEV_ADDR, mem_addr, 1, data);
 }
 
+/*
+ *功能：向pca9685读一字节
+ *输入：
+    mem_addr：寄存器地址
+ *输出：data：待读入数据的地址
+ *返回值：读写成功的状态
+ */
 int _pca9685_read_byte(char mem_addr, unsigned char *data)
 {
     return Sensors_I2C_ReadRegister(PCA9685_DEV_ADDR, mem_addr, 1, data);
 }
 
+/*
+ *功能：pca9685初始化
+ *输入：
+    freq：舵机频率
+ *输出：
+ *返回值：
+ *注意：必须完整运行
+ */
 int _pca9685_init(float freq)
 {
     unsigned int prescale;
@@ -19,22 +42,36 @@ int _pca9685_init(float freq)
     float prescaleval;
     unsigned char prescale_write;
     oldmode = 0x00;
-    _pca9685_write_byte(PCA9685_MODE1, &oldmode);
+    if (_pca9685_write_byte(PCA9685_MODE1, &oldmode))
+        return -1;
     prescaleval = 25000000.0 / (4096 * freq * 0.915);
     prescale = floor(prescaleval + 0.5) - 1;
-    _pca9685_read_byte(PCA9685_MODE1, &oldmode);
-    newmode = (oldmode & 0x7F) | 0x10;            // sleep
-    _pca9685_write_byte(PCA9685_MODE1, &newmode); // go to sleep
+    if (_pca9685_read_byte(PCA9685_MODE1, &oldmode))
+        return -2;
+    newmode = (oldmode & 0x7F) | 0x10; // sleep
+    if (_pca9685_write_byte(PCA9685_MODE1, &newmode))
+        return -3; // go to sleep
     prescale_write = (unsigned char)prescale;
-    _pca9685_write_byte(PCA9685_PRE_SCALE, &prescale_write); // set the prescaler
-    _pca9685_write_byte(PCA9685_MODE1, &oldmode);
+    if (_pca9685_write_byte(PCA9685_PRE_SCALE, &prescale_write))
+        return -4; // set the prescaler
+    if (_pca9685_write_byte(PCA9685_MODE1, &oldmode))
+        return -5;
     PCA_Delay(5);
     newmode = oldmode | 0xa1;
-    _pca9685_write_byte(PCA9685_MODE1, &newmode);
-    PCA_Delay(5);
+    if (_pca9685_write_byte(PCA9685_MODE1, &newmode))
+        return -6;
     return 0;
 }
 
+/*
+ *功能：设置pca9685高低电平开始的时间
+ *输入：
+    channel：通道
+    on：高电平开始时间（0-4096）
+    off：低电平开始时间（0-4096）
+ *输出：
+ *返回值：
+ */
 int _pca9685_set_off_on(unsigned char channel, unsigned int on, unsigned int off)
 {
     unsigned char temp;
@@ -59,56 +96,32 @@ int _pca9685_set_off_on(unsigned char channel, unsigned int on, unsigned int off
     return 0;
 }
 
+/*
+ *功能：设置pca9685产生占空比
+ *输入：
+    channel：通道
+    duty：占空比（0-4096）
+ *输出：
+ *返回值：
+ */
 unsigned int _pca9685_set_duty(unsigned char channel, unsigned int duty)
 {
     _pca9685_set_off_on(channel, 0, duty);
     return 0;
 }
 
+/*
+ *功能：设置pca9685让舵机转的角度
+ *输入：
+    channel：通道
+    angle：角度
+ *输出：
+ *返回值：
+ */
 unsigned int _pca9685_set_angle(unsigned char channel, double angle)
 {
-    return 0;
-}
-
-//测试
-
-TaskHandle_t pca_testTaskHandle;
-
-void pca_test()
-{
-    unsigned int a;
-    unsigned char b;
-    unsigned char ch;
-    int count = 120;
-    ch = 0;
-    _pca9685_init(50);
-    while (1)
-    {
-        count++;
-        if (count > 400)
-        {
-            count = 120;
-        }
-
-        _pca9685_set_duty(ch, count);
-        _pca9685_read_byte(PCA9685_CHANNEL0 + ch * 4 + 2, &b);
-        a = b;
-        _pca9685_read_byte(PCA9685_CHANNEL0 + ch * 4 + 3, &b);
-        a = ((b << 8) & 0xffff) + a;
-        printf("%d\n", a);
-        vTaskDelay(100);
-    }
-}
-
-BaseType_t xpca_testTsakCreat()
-{
-    BaseType_t xReturn = pdPASS;
-    xReturn = xTaskCreate((TaskFunction_t)pca_test,
-                          (const char *)"pca_testTsak",
-                          (uint16_t)256,
-                          (void *)NULL,
-                          (UBaseType_t)9,
-                          (TaskHandle_t *)pca_testTaskHandle);
-
-    return xReturn;
+    unsigned int duty;
+    duty = (unsigned int)(((0.5 + ((angle / 175) * 2.0)) / 20.0) * 4096);
+    _pca9685_set_duty(channel, duty);
+    return duty;
 }

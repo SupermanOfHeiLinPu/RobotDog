@@ -89,7 +89,7 @@ void MX_FREERTOS_Init(void)
     /* USER CODE END RTOS_TIMERS */
 
     /* USER CODE BEGIN RTOS_QUEUES */
-    /* add queues, ... */
+    AttitudeQueueCreat();
     /* USER CODE END RTOS_QUEUES */
 
     /* Create the thread(s) */
@@ -99,8 +99,7 @@ void MX_FREERTOS_Init(void)
     /* USER CODE BEGIN RTOS_THREADS */
     /* add threads, ... */
     xAttitudeTsakCreat();
-    AttitudeQueueCreat();
-    xpca_testTsakCreat();
+
     /* USER CODE END RTOS_THREADS */
 }
 

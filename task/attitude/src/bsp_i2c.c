@@ -30,6 +30,7 @@ int Sensors_I2C_WriteRegister(unsigned char slave_addr,
             bsp_i2c_Delay(1);
         }
     }
+
     return iic_status;
 }
 
