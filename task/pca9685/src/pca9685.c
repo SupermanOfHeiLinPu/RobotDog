@@ -1,3 +1,11 @@
+/*
+ *pca9685模块，使用它驱动舵机
+ *_pca9685_set_angle：设置舵机角度（0-175）
+ *_pca9685_set_duty：设置占空比
+ *_pca9685_set_off_on：设置高低电平起止时间
+ *_pca9685_init：初始化（一定要完整执行）
+ */
+
 #include "pca9685.h"
 
 #define PCA_Delay vTaskDelay
