@@ -41,7 +41,7 @@ int _pca9685_read_byte(char mem_addr, unsigned char *data)
     freq：舵机频率
  *输出：
  *返回值：
- *注意：必须完整运行
+ *
  */
 int _pca9685_init(float freq)
 {
@@ -49,25 +49,58 @@ int _pca9685_init(float freq)
     unsigned char oldmode, newmode;
     float prescaleval;
     unsigned char prescale_write;
+    //进入临界区
+    taskENTER_CRITICAL();
+    //复位
     oldmode = 0x00;
     if (_pca9685_write_byte(PCA9685_MODE1, &oldmode))
+    {
+        //退出临界区
+        taskEXIT_CRITICAL();
         return -1;
-    prescaleval = 25000000.0 / (4096 * freq * 0.915);
-    prescale = floor(prescaleval + 0.5) - 1;
+    }
     if (_pca9685_read_byte(PCA9685_MODE1, &oldmode))
+    {
+        //退出临界区
+        taskEXIT_CRITICAL();
         return -2;
+    }
     newmode = (oldmode & 0x7F) | 0x10; // sleep
     if (_pca9685_write_byte(PCA9685_MODE1, &newmode))
-        return -3; // go to sleep
+    {
+        //退出临界区
+        taskEXIT_CRITICAL();
+        return -3;
+    }
+    prescaleval = 25000000.0 / (4096 * freq * 0.915);
+    prescale = floor(prescaleval + 0.5) - 1;
     prescale_write = (unsigned char)prescale;
     if (_pca9685_write_byte(PCA9685_PRE_SCALE, &prescale_write))
-        return -4; // set the prescaler
+    {
+        //退出临界区
+        taskEXIT_CRITICAL();
+        return -4;
+    }
     if (_pca9685_write_byte(PCA9685_MODE1, &oldmode))
+    {
+        //退出临界区
+        taskEXIT_CRITICAL();
         return -5;
+    }
+    //退出临界区
+    taskEXIT_CRITICAL();
+    //延迟一会
     PCA_Delay(5);
+    //进入临界区
+    taskENTER_CRITICAL();
     newmode = oldmode | 0xa1;
     if (_pca9685_write_byte(PCA9685_MODE1, &newmode))
+    { //退出临界区
+        taskEXIT_CRITICAL();
         return -6;
+    }
+    //退出临界区
+    taskEXIT_CRITICAL();
     return 0;
 }
 

@@ -183,7 +183,13 @@ static unsigned char _mpuReadData(mpu6050 *self)
     if (self->isDMPon)
     {
         get_tick_count(&(self->timestamp));
+        //进入临界区
+        taskENTER_CRITICAL();
+        //从dmp fifo中读取数据
         status = dmp_read_fifo(self->gory, self->accel, tmp_quat, &(self->timestamp), &sensors, &more);
+        //退出临界区
+        taskEXIT_CRITICAL();
+        //如果读取失败
         if (status)
             return -1;
         self->quat[0] = (double)tmp_quat[0] / MPU6050_Q30;

@@ -24,7 +24,12 @@ static void AttitudeTsak()
         mpu_get_dmp_state(&dmp_status);
         if (dmp_status == 0)
         {
+            //进入临界区
+            taskENTER_CRITICAL();
+            //如果没打开dmp则重新初始化
             attitude_self->mpu6050self->mpuFunList->Init(attitude_self->mpu6050self);
+            //退出临界区
+            taskEXIT_CRITICAL();
             //延迟一会
             attitude_self->mpu6050self->mpuFunList->mpu_delay(5);
             continue;
@@ -41,7 +46,7 @@ static void AttitudeTsak()
             //转化为欧拉角
             attitude_self->FunList->bulid_euler_angles(attitude_self);
             //推送至消息队列
-            xQueueOverwrite(AttitudeQueue, &attitude_self);
+            xQueueOverwrite(AttitudeQueue, attitude_self);
             //打印至串口
             printf("q0:%lf\n", attitude_self->quat[0]);
             printf("q1:%lf\n", attitude_self->quat[1]);
