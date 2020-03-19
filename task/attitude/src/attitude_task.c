@@ -10,10 +10,10 @@ static void AttitudeTsak()
     int isReady;
     unsigned char dmp_status;
     attitude *attitude_self;
-    //进入临界区
-    taskENTER_CRITICAL();
     //创建姿态对象
     attitude_self = attitude_self_Creat();
+    //进入临界区
+    taskENTER_CRITICAL();
     //初始化mpu6050
     attitude_self->mpu6050self->mpuFunList->Init(attitude_self->mpu6050self);
     //退出临界区

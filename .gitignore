@@ -10,3 +10,4 @@
 !/Inc/*
 !.gitignore
 !Makefile
+!/picture/**
