@@ -144,6 +144,9 @@ int _pca9685_set_off_on(unsigned char channel, unsigned int on, unsigned int off
     duty：占空比（0-4096）
  *输出：
  *返回值：
+ *备注：
+    520：270度
+    100：0度
  */
 unsigned int _pca9685_set_duty(unsigned char channel, unsigned int duty)
 {
@@ -158,11 +161,14 @@ unsigned int _pca9685_set_duty(unsigned char channel, unsigned int duty)
     angle：角度
  *输出：
  *返回值：
+ *备注：
+    使用的是270度的舵机
+    duty为100时舵机为0度，520时为270度
  */
 unsigned int _pca9685_set_angle(unsigned char channel, double angle)
 {
     unsigned int duty;
-    duty = (unsigned int)(((0.5 + ((angle / 175) * 2.0)) / 20.0) * 4096);
+    duty = 100 + (420) / 270.0 * angle;
     _pca9685_set_duty(channel, duty);
     return duty;
 }
