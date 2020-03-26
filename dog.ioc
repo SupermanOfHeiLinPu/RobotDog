@@ -2,9 +2,10 @@
 CORTEX_M7.CPU_DCache=Enabled
 CORTEX_M7.CPU_ICache=Enabled
 CORTEX_M7.IPParameters=CPU_ICache,CPU_DCache
-FREERTOS.IPParameters=Tasks01,configENABLE_FPU
+FREERTOS.IPParameters=Tasks01,configENABLE_FPU,configTOTAL_HEAP_SIZE
 FREERTOS.Tasks01=defaultTask,24,128,StartDefaultTask,Default,NULL,Dynamic,NULL,NULL
 FREERTOS.configENABLE_FPU=1
+FREERTOS.configTOTAL_HEAP_SIZE=36864
 File.Version=6
 GPIO.groupedBy=Group By Peripherals
 I2C4.IPParameters=Timing

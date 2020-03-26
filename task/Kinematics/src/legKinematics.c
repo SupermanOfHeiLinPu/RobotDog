@@ -11,8 +11,7 @@
  */
 int _one_leg_kinematics(double theta1, double theta2, double theta3, double matrix[4][4])
 {
-    double a1, a2, a3, d2;
-    a1 = DOG_LEG_A1;
+    double a2, a3, d2;
     a2 = DOG_LEG_A2;
     a3 = DOG_LEG_A3;
     d2 = DOG_LEG_D2;

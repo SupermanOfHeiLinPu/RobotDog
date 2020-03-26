@@ -3,6 +3,7 @@
 
 #include "pca9685.h"
 #include "theta2dev.h"
+#include "gait_task.h"
 
 #include "cmsis_os.h"
 #include "cmsis_os2.h"
