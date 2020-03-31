@@ -1,8 +1,118 @@
 #include "gait.h"
 
-int tort(double t, double Tm, double out_theta[3])
+/*
+ *功能:椭圆轨迹-对角小跑步态
+ *描述：输入alpha（0~2PI），抬腿高度H，步长E，输出驱动空间theta[12]
+ *输入：
+    alpha：0~2PI，周期为2PI
+    H：抬腿高度
+    E：步长
+    theta：输出驱动空间地址
+ *输出：
+    theta[12]:驱动空间
+ *备注：
+    测试值为：tort_cycloid(t, 25, 10, 50, theta);
+ */
+int tort_cycloid(double t, double T, double H, double E, double theta[12])
 {
+    double theta1[3], theta2[3], theta3[3], theta4[3];
+    double x, y, z;
+    double alpha;
 
+    alpha = (t / T) * 2 * PI;
+
+    if (alpha > 2 * PI)
+        return -1;
+
+    //z = (E * (alpha - sin(alpha))) / (2 * PI) - 38.891;
+    //x = 98.891 - H * (1 - cos(alpha)) / 2;
+
+    z = -E * cos(alpha);
+    x = 98 - H * sin(alpha);
+    if (_one_leg_invkinematics_1(x, -27, z, theta1) == -720)
+        return -1;
+    //z = -E * cos(alpha);
+    //x = 90 - H * sin(alpha);
+    //if (_one_leg_invkinematics_1(x, -27, z, theta4) == -720)
+    //    return -1;
+    theta4[0] = theta1[0];
+    theta4[1] = theta1[1];
+    theta4[2] = theta1[2];
+    alpha = alpha + PI;
+    z = -E * cos(alpha);
+    x = 98 - H * sin(alpha);
+    if (_one_leg_invkinematics_1(x, -27, z, theta2) == -720)
+        return -1;
+    //z = -E * cos(alpha);
+    //x = 90 - H * sin(alpha);
+    //if (_one_leg_invkinematics_1(x, -27, z, theta3) == -720)
+    //    return -1;
+    theta3[0] = theta2[0];
+    theta3[1] = theta2[1];
+    theta3[2] = theta2[2];
+    theta[0] = _theta_0_2driver(180.0 * (theta1[2] / PI));
+    theta[1] = _theta_1_2driver(180.0 * (theta2[2] / PI));
+    theta[2] = _theta_2_2driver(180.0 * (theta3[2] / PI));
+    theta[3] = _theta_3_2driver(180.0 * (theta4[2] / PI));
+    theta[4] = _theta_4_2driver(180.0 * (theta1[1] / PI) - 15);
+    theta[5] = _theta_5_2driver(180.0 * (theta2[1] / PI) - 15);
+    theta[6] = _theta_6_2driver(180.0 * (theta3[1] / PI) - 15);
+    theta[7] = _theta_7_2driver(180.0 * (theta4[1] / PI) - 15);
+    theta[8] = _theta_8_2driver(180.0 * (theta1[0] / PI));
+    theta[9] = _theta_9_2driver(180.0 * (theta2[0] / PI));
+    theta[10] = _theta_10_2driver(180.0 * (theta3[0] / PI));
+    theta[11] = _theta_11_2driver(180.0 * (theta4[0] / PI));
+    if (theta[0] == -720 || theta[1] == -720 || theta[2] == -720 || theta[3] == -720 || theta[4] == -720 || theta[5] == -720 || theta[6] == -720 || theta[7] == -720 || theta[8] == -720 || theta[9] == -720 || theta[10] == -720 || theta[11] == -720)
+        return -2;
+    return 0;
+}
+
+/*
+ *功能：顾名思义
+ */
+int fuck_earth(double t, double T, double H, double E, double theta[12])
+{
+    double theta1[3], theta2[3], theta3[3], theta4[3];
+    double x, z;
+    double alpha;
+
+    alpha = (t / T) * 2 * PI;
+
+    if (alpha > 2 * PI)
+        return -1;
+
+    z = E * cos(alpha);
+    x = 98 - H * sin(alpha);
+
+    if (_one_leg_invkinematics_1(x, -27, z, theta3) == -720)
+        return -1;
+    theta4[0] = theta3[0];
+    theta4[1] = theta3[1];
+    theta4[2] = theta3[2];
+
+    alpha = alpha + PI;
+    z = E * cos(alpha);
+    x = 98 - H * sin(alpha);
+    if (_one_leg_invkinematics_1(x, -27, z, theta1) == -720)
+        return -1;
+    theta2[0] = theta1[0];
+    theta2[1] = theta1[1];
+    theta2[2] = theta1[2];
+
+    theta[0] = _theta_0_2driver(180.0 * (theta1[2] / PI));
+    theta[1] = _theta_1_2driver(180.0 * (theta2[2] / PI));
+    theta[2] = _theta_2_2driver(180.0 * (theta3[2] / PI));
+    theta[3] = _theta_3_2driver(180.0 * (theta4[2] / PI));
+    theta[4] = _theta_4_2driver(180.0 * (theta1[1] / PI) - 15);
+    theta[5] = _theta_5_2driver(180.0 * (theta2[1] / PI) - 15);
+    theta[6] = _theta_6_2driver(180.0 * (theta3[1] / PI) - 15);
+    theta[7] = _theta_7_2driver(180.0 * (theta4[1] / PI) - 15);
+    theta[8] = _theta_8_2driver(180.0 * (theta1[0] / PI));
+    theta[9] = _theta_9_2driver(180.0 * (theta2[0] / PI));
+    theta[10] = _theta_10_2driver(180.0 * (theta3[0] / PI));
+    theta[11] = _theta_11_2driver(180.0 * (theta4[0] / PI));
+    if (theta[0] == -720 || theta[1] == -720 || theta[2] == -720 || theta[3] == -720 || theta[4] == -720 || theta[5] == -720 || theta[6] == -720 || theta[7] == -720 || theta[8] == -720 || theta[9] == -720 || theta[10] == -720 || theta[11] == -720)
+        return -2;
     return 0;
 }
 
@@ -29,7 +139,7 @@ int mark_time(double t, double T, double H0, double theta[12])
         theta4[0] = theta1[0];
         theta4[1] = theta1[1];
         theta4[2] = theta1[2];
-        if (_one_leg_invkinematics_1(98.891, -27, -38.891, theta2) == -720)
+        if (_one_leg_invkinematics_1(79.462, -27, -77.631, theta2) == -720)
             return -1;
         theta3[0] = theta2[0];
         theta3[1] = theta2[1];
@@ -43,7 +153,7 @@ int mark_time(double t, double T, double H0, double theta[12])
         theta4[0] = theta1[0];
         theta4[1] = theta1[1];
         theta4[2] = theta1[2];
-        if (_one_leg_invkinematics_1(98.891, -27, -38.891, theta2) == -720)
+        if (_one_leg_invkinematics_1(79.462, -27, -77.631, theta2) == -720)
             return -1;
         theta3[0] = theta2[0];
         theta3[1] = theta2[1];
@@ -57,7 +167,7 @@ int mark_time(double t, double T, double H0, double theta[12])
         theta3[0] = theta2[0];
         theta3[1] = theta2[1];
         theta3[2] = theta2[2];
-        if (_one_leg_invkinematics_1(98.891, -27, -38.891, theta1) == -720)
+        if (_one_leg_invkinematics_1(79.462, -27, -77.631, theta1) == -720)
             return -1;
         theta4[0] = theta1[0];
         theta4[1] = theta1[1];
@@ -66,12 +176,12 @@ int mark_time(double t, double T, double H0, double theta[12])
     else if (t > (3 * T / 4) && t <= T)
     {
         x = (98.891 - H0) + H0 * ((t - (3 * T / 4)) / (T / 4));
-        if (_one_leg_invkinematics_1(x, -27, -27.5, theta2) == -720)
+        if (_one_leg_invkinematics_1(x, -27, -38.891, theta2) == -720)
             return -1;
         theta3[0] = theta2[0];
         theta3[1] = theta2[1];
         theta3[2] = theta2[2];
-        if (_one_leg_invkinematics_1(98.891, -27, -38.891, theta1) == -720)
+        if (_one_leg_invkinematics_1(79.462, -27, -77.631, theta1) == -720)
             return -1;
         theta4[0] = theta1[0];
         theta4[1] = theta1[1];

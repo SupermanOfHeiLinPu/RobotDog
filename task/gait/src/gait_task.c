@@ -11,16 +11,15 @@ QueueHandle_t GaitQueue;
 void xGaitTask()
 {
     double theta[12];
-    int t = 0;
+    double t = 0;
     while (1)
     {
         t++;
-        if (t > 30)
-        {
+        if (t > 25)
             t = 0;
-        }
 
-        mark_time(t, 30, 30, theta);
+        tort_cycloid(t, 25, 10, 50, theta);
+        //stand(theta);
         xQueueOverwrite(GaitQueue, theta);
     }
 }

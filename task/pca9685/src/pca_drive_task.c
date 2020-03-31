@@ -1,4 +1,7 @@
 #include "pca_drive_task.h"
+
+double a = 45, flag = 0;
+
 //舵机驱动任务句柄
 TaskHandle_t ServoDriverTaskHandle;
 void xServoDriverTask()
@@ -6,12 +9,12 @@ void xServoDriverTask()
     double theta[12];
     BaseType_t statue;
     _pca9685_init(50);
+
     while (1)
     {
         statue = xQueueReceive(GaitQueue, theta, portMAX_DELAY);
         if (statue != pdTRUE)
             continue;
-
         taskENTER_CRITICAL();
         _pca9685_set_angle(0, theta[0]);
         _pca9685_set_angle(1, theta[1]);

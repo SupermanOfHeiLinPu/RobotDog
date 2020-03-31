@@ -27,7 +27,7 @@ double _theta_1_2driver(double theta)
 {
     double result;
     //因为狗腿子的机械特性，ZERO_JOINT_0为机械零位的值，即默认theta最小为30度
-    result = ZERO_JOINT_1 - theta + 30;
+    result = ZERO_JOINT_1 - theta + 35;
     if ((result > MAX_SERVO_ANGLE) || result < MIN_SERVO_ANGLE)
         return -720;
     return result;
@@ -37,7 +37,7 @@ double _theta_2_2driver(double theta)
 {
     double result;
     //因为狗腿子的机械特性，ZERO_JOINT_0为机械零位的值，即默认theta最小为30度
-    result = theta + ZERO_JOINT_2 - 30;
+    result = theta + ZERO_JOINT_2 - 40;
     if ((result > MAX_SERVO_ANGLE) || result < MIN_SERVO_ANGLE)
         return -720;
     return result;
@@ -47,7 +47,7 @@ double _theta_3_2driver(double theta)
 {
     double result;
     //因为狗腿子的机械特性，ZERO_JOINT_0为机械零位的值，即默认theta最小为30度
-    result = ZERO_JOINT_3 - theta + 30;
+    result = ZERO_JOINT_3 - theta + 35;
     if ((result > MAX_SERVO_ANGLE) || result < MIN_SERVO_ANGLE)
         return -720;
     return result;
