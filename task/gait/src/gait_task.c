@@ -17,8 +17,7 @@ void xGaitTask()
         t++;
         if (t > 25)
             t = 0;
-
-        tort_cycloid(t, 25, 10, 50, theta);
+        tort_cycloid(t, 25, 20, 50, theta, 1);
         //stand(theta);
         xQueueOverwrite(GaitQueue, theta);
     }
@@ -31,7 +30,7 @@ BaseType_t xGaitTaskCreat()
                           (const char *)"GaitTask",
                           (uint16_t)256,
                           (void *)NULL,
-                          (UBaseType_t)9,
+                          (UBaseType_t)5,
                           (TaskHandle_t *)GaitTaskHandle);
     return xReturn;
 }

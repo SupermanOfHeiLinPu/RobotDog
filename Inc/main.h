@@ -58,6 +58,16 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define PS2_CLK_Pin GPIO_PIN_4
+#define PS2_CLK_GPIO_Port GPIOH
+#define PS2_CS_Pin GPIO_PIN_5
+#define PS2_CS_GPIO_Port GPIOH
+#define LED_Pin GPIO_PIN_11
+#define LED_GPIO_Port GPIOD
+#define PS2_DAT_Pin GPIO_PIN_9
+#define PS2_DAT_GPIO_Port GPIOA
+#define PS2_CMD_Pin GPIO_PIN_10
+#define PS2_CMD_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

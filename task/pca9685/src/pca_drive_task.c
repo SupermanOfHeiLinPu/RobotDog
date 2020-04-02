@@ -40,7 +40,7 @@ int xServoDriverTaskCreat()
                           (const char *)"ServoTsak",
                           (uint16_t)256,
                           (void *)NULL,
-                          (UBaseType_t)10,
+                          (UBaseType_t)6,
                           (TaskHandle_t *)ServoDriverTaskHandle);
 
     return xReturn;
