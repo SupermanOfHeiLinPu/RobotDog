@@ -34,8 +34,12 @@ static void AttitudeTsak()
             attitude_self->mpu6050self->mpuFunList->mpu_delay(5);
             continue;
         }
+        //进入临界区
+        taskENTER_CRITICAL();
         //读取四元数
         isReady = attitude_self->mpu6050self->mpuFunList->ReadData(attitude_self->mpu6050self);
+        //退出临界区
+        taskEXIT_CRITICAL();
         if (!isReady)
         {
             //将mpu6050 dmp的四元数拷贝过来
@@ -45,16 +49,24 @@ static void AttitudeTsak()
             attitude_self->quat[3] = attitude_self->mpu6050self->quat[3];
             //转化为欧拉角
             attitude_self->FunList->bulid_euler_angles(attitude_self);
+#if (GESTURE_QUEUE_LEN < 1)
+#error "GESTURE_QUEUE_LEN must more than 1"
+#endif
+#if (GESTURE_QUEUE_LEN == 1)
             //推送至消息队列
             xQueueOverwrite(AttitudeQueue, attitude_self);
+#else
+            //推送至消息队列
+            xQueueSend(AttitudeQueue, attitude_self, portMAX_DELAY);
+#endif
             //打印至串口
-            /*printf("q0:%lf\n", attitude_self->quat[0]);
+            printf("q0:%lf\n", attitude_self->quat[0]);
             printf("q1:%lf\n", attitude_self->quat[1]);
             printf("q2:%lf\n", attitude_self->quat[2]);
             printf("q3:%lf\n", attitude_self->quat[3]);
             printf("pitch:%lf\n", attitude_self->pitch);
             printf("yaw:%lf\n", attitude_self->yaw);
-            printf("roll:%lf\n", attitude_self->roll);*/
+            printf("roll:%lf\n", attitude_self->roll);
         }
         //延迟一会
         attitude_self->mpu6050self->mpuFunList->mpu_delay(5);
@@ -69,7 +81,7 @@ BaseType_t xAttitudeTsakCreat()
                           (const char *)"AttitudeTsak",
                           (uint16_t)256,
                           (void *)NULL,
-                          (UBaseType_t)5,
+                          (UBaseType_t)6,
                           (TaskHandle_t *)AttitudeTaskHandle);
 
     return xReturn;

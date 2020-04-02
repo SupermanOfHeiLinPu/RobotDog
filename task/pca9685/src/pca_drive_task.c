@@ -9,7 +9,6 @@ void xServoDriverTask()
     double theta[12];
     BaseType_t statue;
     _pca9685_init(50);
-
     while (1)
     {
         statue = xQueueReceive(GaitQueue, theta, portMAX_DELAY);
@@ -30,6 +29,8 @@ void xServoDriverTask()
         _pca9685_set_angle(11, theta[11]);
         //退出临界区
         taskEXIT_CRITICAL();
+        //得有个延迟
+        vTaskDelay(10);
     }
 }
 
@@ -40,7 +41,7 @@ int xServoDriverTaskCreat()
                           (const char *)"ServoTsak",
                           (uint16_t)256,
                           (void *)NULL,
-                          (UBaseType_t)6,
+                          (UBaseType_t)5,
                           (TaskHandle_t *)ServoDriverTaskHandle);
 
     return xReturn;

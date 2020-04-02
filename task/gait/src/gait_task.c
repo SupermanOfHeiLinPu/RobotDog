@@ -18,8 +18,8 @@ void xGaitTask()
         if (t > 25)
             t = 0;
         tort_cycloid(t, 25, 20, 50, theta, 1);
-        //stand(theta);
-        xQueueOverwrite(GaitQueue, theta);
+        stand(theta);
+        xQueueSend(GaitQueue, theta, portMAX_DELAY);
     }
 }
 

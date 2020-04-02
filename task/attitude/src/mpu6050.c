@@ -323,3 +323,46 @@ void MPU6050_Self_Delete(mpu6050 *self)
 {
     vPortFree(self);
 }
+
+/*
+ *功能:mpu6050初始化
+ self->isDMPon:1打开dmp；0关闭dmp
+ self->sample_rate:采样率
+ self->dmp_rate：dmp速度
+ *TODO:dmp初始化
+ *成功返回0
+ */
+int _mpuDMPInit()
+{
+    unsigned char data;
+
+    unsigned long timestamp;
+    struct int_param_s int_param;
+    unsigned short dmp_features = DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
+                                  DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO |
+                                  DMP_FEATURE_GYRO_CAL;
+
+    if (mpu_init(&int_param))
+    {
+        return -1;
+    }
+    //唤醒所有传感器
+    mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+    //使能accel和gyro的fifo
+    mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+    //设置采样率
+    mpu_set_sample_rate(1000);
+    //获取时间戳
+    get_tick_count(&timestamp);
+    //加载dmp固件
+    dmp_load_motion_driver_firmware();
+    dmp_set_orientation(
+        inv_orientation_matrix_to_scalar(gyro_pdata.orientation));
+    //使能dmp
+    dmp_enable_feature(dmp_features);
+    //设置dmp FIFO的速率
+    dmp_set_fifo_rate(200);
+    //打开dmp
+    mpu_set_dmp_state(1);
+    return 0;
+}

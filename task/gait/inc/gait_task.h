@@ -6,7 +6,7 @@
 #include "cmsis_os2.h"
 #include "queue.h"
 
-#define GAIT_QUEUE_LEN (1)
+#define GAIT_QUEUE_LEN (8)
 
 extern TaskHandle_t GaitTaskHandle;
 extern QueueHandle_t GaitQueue;
