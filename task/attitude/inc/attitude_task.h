@@ -8,7 +8,7 @@
 #include "cmsis_os2.h"
 #include "queue.h"
 
-#define GESTURE_QUEUE_LEN 1
+#define ATTITUDE_QUEUE_LEN 2
 
 //姿态任务句柄
 extern TaskHandle_t AttitudeTaskHandle;

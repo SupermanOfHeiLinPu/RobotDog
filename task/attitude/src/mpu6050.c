@@ -191,7 +191,7 @@ static unsigned char _mpuReadData(mpu6050 *self)
         taskEXIT_CRITICAL();
         //如果读取失败
         if (status)
-            return -1;
+            return status;
         self->quat[0] = (double)tmp_quat[0] / MPU6050_Q30;
         self->quat[1] = (double)tmp_quat[1] / MPU6050_Q30;
         self->quat[2] = (double)tmp_quat[2] / MPU6050_Q30;
@@ -310,7 +310,7 @@ mpu6050 *MPU6050_Self_Creat(char devaddr, _Bool isDMP)
     self->isDMPon = isDMP;
     self->mpuFunList = &_mpu1FunList;
     self->sample_rate = 1000;
-    self->dmp_rate = 200;
+    self->dmp_rate = 500;
 
     return self;
 }
@@ -334,8 +334,6 @@ void MPU6050_Self_Delete(mpu6050 *self)
  */
 int _mpuDMPInit()
 {
-    unsigned char data;
-
     unsigned long timestamp;
     struct int_param_s int_param;
     unsigned short dmp_features = DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |

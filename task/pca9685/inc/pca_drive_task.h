@@ -8,6 +8,7 @@
 #include "cmsis_os.h"
 #include "cmsis_os2.h"
 
+extern TaskHandle_t ServoDriverTaskHandle;
 extern int xServoDriverTaskCreat();
 
 #endif

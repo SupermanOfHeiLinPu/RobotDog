@@ -1,7 +1,5 @@
 #include "pca_drive_task.h"
 
-double a = 45, flag = 0;
-
 //舵机驱动任务句柄
 TaskHandle_t ServoDriverTaskHandle;
 void xServoDriverTask()
@@ -14,7 +12,6 @@ void xServoDriverTask()
         statue = xQueueReceive(GaitQueue, theta, portMAX_DELAY);
         if (statue != pdTRUE)
             continue;
-        taskENTER_CRITICAL();
         _pca9685_set_angle(0, theta[0]);
         _pca9685_set_angle(1, theta[1]);
         _pca9685_set_angle(2, theta[2]);
@@ -27,10 +24,6 @@ void xServoDriverTask()
         _pca9685_set_angle(9, theta[9]);
         _pca9685_set_angle(10, theta[10]);
         _pca9685_set_angle(11, theta[11]);
-        //退出临界区
-        taskEXIT_CRITICAL();
-        //得有个延迟
-        vTaskDelay(10);
     }
 }
 
@@ -41,7 +34,7 @@ int xServoDriverTaskCreat()
                           (const char *)"ServoTsak",
                           (uint16_t)256,
                           (void *)NULL,
-                          (UBaseType_t)5,
+                          (UBaseType_t)6,
                           (TaskHandle_t *)ServoDriverTaskHandle);
 
     return xReturn;

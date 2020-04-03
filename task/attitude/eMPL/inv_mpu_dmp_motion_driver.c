@@ -477,7 +477,7 @@ static const unsigned short sStartAddress = 0x0400;
 
 #define MAX_PACKET_LENGTH (32)
 
-#define DMP_SAMPLE_RATE (200)
+#define DMP_SAMPLE_RATE (1000)
 #define GYRO_SF (46850825LL * 200 / DMP_SAMPLE_RATE)
 
 #define FIFO_CORRUPTION_CHECK

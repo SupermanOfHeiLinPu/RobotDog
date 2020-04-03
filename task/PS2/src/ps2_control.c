@@ -36,6 +36,7 @@ int _PS2_Read_Data(unsigned char data[9])
     _PS2_Write_Byte(0X42, data);
     for (j = 2; j < 9; j++)
     {
+        data[j] = 0;
         PS2_Nop(500);
         for (i = 1; i <= 128; i <<= 1)
         {
@@ -47,15 +48,18 @@ int _PS2_Read_Data(unsigned char data[9])
             if (DAT)
             {
                 data[j] = i | data[j];
+                //printf("1");
                 PS2_Nop(500);
             }
             else
             {
+                //printf("0");
                 PS2_Nop(500);
             }
         }
         PS2_Nop(500);
         PS2_Nop(500);
+        //printf("%d\n", j);
     }
     CS_H;
     return 0;

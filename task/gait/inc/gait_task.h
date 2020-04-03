@@ -6,6 +6,9 @@
 #include "cmsis_os2.h"
 #include "queue.h"
 
+#include "attitude_task.h"
+#include "ps2_control.h"
+
 #define GAIT_QUEUE_LEN (8)
 
 extern TaskHandle_t GaitTaskHandle;

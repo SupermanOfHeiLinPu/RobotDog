@@ -16,6 +16,6 @@
 #define CLK_H HAL_GPIO_WritePin(PS2_CLK_GPIO_Port, PS2_CLK_Pin, GPIO_PIN_SET)
 #define CLK_L HAL_GPIO_WritePin(PS2_CLK_GPIO_Port, PS2_CLK_Pin, GPIO_PIN_RESET)
 
-extern int _PS2_Read_Data(unsigned char data[8]);
+extern int _PS2_Read_Data(unsigned char data[9]);
 
 #endif
