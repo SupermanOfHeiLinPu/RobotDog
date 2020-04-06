@@ -38,6 +38,7 @@ int tort_cycloid(double t, double T, double H, double E, double theta[12], int d
     else if (dir == 3)
     {
         max_x = 95;
+        y = -27.0;
         a = -1;
     }
     else if (dir == 0)
