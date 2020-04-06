@@ -27,25 +27,23 @@ int tort_cycloid(double t, double T, double H, double E, double theta[12], int d
     //如果直行x轴最大坐标为95，转弯为90（每条腿的基座标）
     if (dir == 1)
     {
-        z = 0;
-        max_x = 95;
+        max_x = 90;
         y = -27 - E * cos(alpha);
     }
     else if (dir == 2)
     {
-        z = 0;
-        max_x = 95;
+        max_x = 90;
         y = -27 + E * cos(alpha);
     }
     else if (dir == 3)
     {
+        max_x = 95;
         a = -1;
     }
     else if (dir == 0)
     {
-        max_x = 90;
+        max_x = 95;
         y = -27.0;
-        z = -E * cos(alpha);
     }
     //椭圆方程
     x = max_x - H * sin(alpha);
