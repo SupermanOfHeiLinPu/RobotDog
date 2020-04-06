@@ -16,27 +16,40 @@
 int tort_cycloid(double t, double T, double H, double E, double theta[12], int dir)
 {
     double theta1[3], theta2[3], theta3[3], theta4[3];
-    double x, y, z;
+    double x, y = -27, z = 0;
     double alpha;
-    double max_x;
+    double max_x = 95;
+    int a = 1;
     //将周期换算到2PI
     alpha = (t / T) * 2 * PI;
     if (alpha > 2 * PI)
         return -1;
-    //如果直行x轴最大坐标为98，转弯为90（每条腿的基座标）
-    if (dir != 0)
+    //如果直行x轴最大坐标为95，转弯为90（每条腿的基座标）
+    if (dir == 1)
+    {
+        z = 0;
+        max_x = 95;
+        y = -27 - E * cos(alpha);
+    }
+    else if (dir == 2)
+    {
+        z = 0;
+        max_x = 95;
+        y = -27 + E * cos(alpha);
+    }
+    else if (dir == 3)
+    {
+        a = -1;
+    }
+    else if (dir == 0)
     {
         max_x = 90;
-        y = -27;
-    }
-    else
-    {
-        max_x = 98;
         y = -27.0;
+        z = -E * cos(alpha);
     }
     //椭圆方程
-    z = -E * cos(alpha);
     x = max_x - H * sin(alpha);
+    z = a * -E * cos(alpha);
     if (_one_leg_invkinematics_1(x, y, z, theta1) == -720)
         return -1;
     //腿四和腿一动作一样
@@ -45,7 +58,7 @@ int tort_cycloid(double t, double T, double H, double E, double theta[12], int d
     theta4[2] = theta1[2];
     //腿1,4和腿2,3有半个周期差
     alpha = alpha + PI;
-    z = -E * cos(alpha);
+    z = a * -E * cos(alpha);
     x = max_x - H * sin(alpha);
     if (_one_leg_invkinematics_1(x, y, z, theta2) == -720)
         return -1;

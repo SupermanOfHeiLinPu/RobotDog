@@ -8,9 +8,9 @@
 */
 #define ZERO_JOINT_0 (95)
 #define ZERO_JOINT_1 (190)
-#define ZERO_JOINT_2 (83)
+#define ZERO_JOINT_2 (85)
 #define ZERO_JOINT_3 (180)
-#define ZERO_JOINT_4 (53)
+#define ZERO_JOINT_4 (51)
 #define ZERO_JOINT_5 (193)
 #define ZERO_JOINT_6 (133)
 #define ZERO_JOINT_7 (120)
