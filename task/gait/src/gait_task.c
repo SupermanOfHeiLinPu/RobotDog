@@ -17,7 +17,7 @@ int go_straight(uint32_t current_time, double T, double theta[12])
         lastT = current_time;
         deltaT = 0;
     }
-    tort_cycloid(deltaT, T, 10, 50, theta, 0);
+    tort_cycloid(deltaT, T, 20, 40, theta, 0);
     return 0;
 }
 
@@ -34,7 +34,7 @@ int go_right(uint32_t current_time, double T, double theta[12])
         lastT = current_time;
         deltaT = 0;
     }
-    tort_cycloid(deltaT, T, 10, 20, theta, 1);
+    tort_cycloid(deltaT, T, 15, 30, theta, 1);
     return 0;
 }
 
@@ -48,7 +48,7 @@ int go_left(uint32_t current_time, double T, double theta[12])
         lastT = current_time;
         deltaT = 0;
     }
-    tort_cycloid(deltaT, T, 10, 20, theta, 2);
+    tort_cycloid(deltaT, T, 15, 30, theta, 2);
     return 0;
 }
 
@@ -62,7 +62,21 @@ int go_back(uint32_t current_time, double T, double theta[12])
         lastT = current_time;
         deltaT = 0;
     }
-    tort_cycloid(deltaT, T, 10, 50, theta, 3);
+    tort_cycloid(deltaT, T, 20, 50, theta, 3);
+    return 0;
+}
+
+int go_mark(uint32_t current_time, double T, double theta[12])
+{
+    uint32_t deltaT;
+    static uint32_t lastT;
+    deltaT = current_time - lastT;
+    if (deltaT > T)
+    {
+        lastT = current_time;
+        deltaT = 0;
+    }
+    mark_time(deltaT, T, 10, 0, theta, 0);
     return 0;
 }
 
@@ -87,23 +101,24 @@ void xGaitTask()
         t = xTaskGetTickCount();
         if (ps2_data[3] == 255)
         {
-            stand(theta);
+            stand(euler_angles[0], euler_angles[1], euler_angles[2], theta);
+            //go_mark(t, 1000, theta);
         }
         else if (ps2_data[3] == 239)
         {
-            go_straight(t, 250, theta);
+            go_straight(t, 1000, theta);
         }
         else if (ps2_data[3] == 127)
         {
-            go_left(t, 250, theta);
+            go_left(t, 1000, theta);
         }
         else if (ps2_data[3] == 223)
         {
-            go_right(t, 250, theta);
+            go_right(t, 1000, theta);
         }
         else if (ps2_data[3] == 191)
         {
-            go_back(t, 250, theta);
+            go_back(t, 1000, theta);
         }
 
         xQueueSend(GaitQueue, theta, portMAX_DELAY);

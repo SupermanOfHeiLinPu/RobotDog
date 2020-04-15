@@ -6,18 +6,18 @@
 /*
 *调用_pca9685_set_angle时每个关节的零位角度
 */
-#define ZERO_JOINT_0 (95)
-#define ZERO_JOINT_1 (190)
-#define ZERO_JOINT_2 (85)
-#define ZERO_JOINT_3 (180)
-#define ZERO_JOINT_4 (51)
+#define ZERO_JOINT_0 (34)
+#define ZERO_JOINT_1 (265)
+#define ZERO_JOINT_2 (17)
+#define ZERO_JOINT_3 (244)
+#define ZERO_JOINT_4 (54)
 #define ZERO_JOINT_5 (193)
 #define ZERO_JOINT_6 (133)
 #define ZERO_JOINT_7 (120)
 #define ZERO_JOINT_8 (100)
 #define ZERO_JOINT_9 (95)
-#define ZERO_JOINT_10 (113)
-#define ZERO_JOINT_11 (80)
+#define ZERO_JOINT_10 (115)
+#define ZERO_JOINT_11 (83)
 
 /*
  *舵机的最大与最小角度

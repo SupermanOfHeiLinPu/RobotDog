@@ -10,7 +10,7 @@
 #define PI 3.14159265358979f
 #endif
 extern int tort_cycloid(double t, double T, double H, double E, double theta[12], int dir);
-extern int mark_time(double t, double T, double H0, double theta[12]);
-extern int stand(double theta[12]);
+extern int mark_time(double t, double T, double H, double E, double theta[12], int dir);
+extern int stand(double pitch, double roll, double yaw, double theta[12]);
 extern int fuck_earth(double t, double T, double H, double E, double theta[12]);
 #endif

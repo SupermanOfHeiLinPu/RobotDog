@@ -168,7 +168,8 @@ unsigned int _pca9685_set_duty(unsigned char channel, unsigned int duty)
 unsigned int _pca9685_set_angle(unsigned char channel, double angle)
 {
     unsigned int duty;
-    duty = 100 + (420) / 270.0 * angle;
+    //duty = 100 + (420) / 270.0 * angle;
+    duty = 4096 * ((0.5 + (angle / 270) * 2.0) / 20.0);
     _pca9685_set_duty(channel, duty);
     return duty;
 }
