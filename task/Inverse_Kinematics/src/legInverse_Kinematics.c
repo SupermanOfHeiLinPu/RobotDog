@@ -169,3 +169,40 @@ int _one_leg_invkinematics_4(double px, double py, double pz, double theta[3])
     theta[1] -= theta[2];
     return 0;
 }
+
+int _body_attitude_invkinematics(double thteta1[3], double thteta2[3],
+                                 double thteta3[3], double thteta4[3],
+                                 double pitch, double roll, double yaw,
+                                 double H0)
+{
+    double x, y, z;
+    x = DOG_BODY_LEN * sin(pitch) + H0 * cos(pitch) * cos(roll) + DOG_BODY_WEIGHT * cos(pitch) * sin(roll);
+    y = DOG_BODY_WEIGHT - DOG_BODY_WEIGHT * cos(roll) * cos(yaw) + H0 * cos(yaw) * sin(roll) + DOG_BODY_LEN * cos(pitch) * sin(yaw) - DOG_BODY_WEIGHT * sin(pitch) * sin(roll) * sin(yaw) - H0 * cos(roll) * sin(pitch) * sin(yaw);
+    y = y - DOG_LEG_D2;
+    z = DOG_BODY_LEN - DOG_BODY_LEN * cos(pitch) * cos(yaw) - DOG_BODY_WEIGHT * cos(roll) * sin(yaw) + H0 * sin(roll) * sin(yaw) + H0 * cos(roll) * cos(yaw) * sin(pitch) + DOG_BODY_WEIGHT * cos(yaw) * sin(pitch) * sin(roll);
+    if (_one_leg_invkinematics_1(x, y, z, thteta1) == -720)
+        return -1;
+
+    x = DOG_BODY_LEN * sin(pitch) + H0 * cos(pitch) * cos(roll) - DOG_BODY_WEIGHT * cos(pitch) * sin(roll);
+    y = DOG_BODY_WEIGHT * cos(roll) * cos(yaw) - DOG_BODY_WEIGHT + H0 * cos(yaw) * sin(roll) + DOG_BODY_LEN * cos(pitch) * sin(yaw) + DOG_BODY_WEIGHT * sin(pitch) * sin(roll) * sin(yaw) - H0 * cos(roll) * sin(pitch) * sin(yaw);
+    y = y - DOG_LEG_D2;
+    z = DOG_BODY_LEN - DOG_BODY_LEN * cos(pitch) * cos(yaw) + DOG_BODY_WEIGHT * cos(roll) * sin(yaw) + H0 * sin(roll) * sin(yaw) + H0 * cos(roll) * cos(yaw) * sin(pitch) - DOG_BODY_WEIGHT * cos(yaw) * sin(pitch) * sin(roll);
+    if (_one_leg_invkinematics_1(x, y, z, thteta2) == -720)
+        return -1;
+
+    x = H0 * cos(pitch) * cos(roll) - DOG_BODY_LEN * sin(pitch) + DOG_BODY_WEIGHT * cos(pitch) * sin(roll);
+    y = DOG_BODY_WEIGHT - DOG_BODY_WEIGHT * cos(roll) * cos(yaw) + H0 * cos(yaw) * sin(roll) - DOG_BODY_LEN * cos(pitch) * sin(yaw) - DOG_BODY_WEIGHT * sin(pitch) * sin(roll) * sin(yaw) - H0 * cos(roll) * sin(pitch) * sin(yaw);
+    y = y - DOG_LEG_D2;
+    z = DOG_BODY_LEN * cos(pitch) * cos(yaw) - DOG_BODY_LEN - DOG_BODY_WEIGHT * cos(roll) * sin(yaw) + H0 * sin(roll) * sin(yaw) + H0 * cos(roll) * cos(yaw) * sin(pitch) + DOG_BODY_WEIGHT * cos(yaw) * sin(pitch) * sin(roll);
+    if (_one_leg_invkinematics_1(x, y, z, thteta3) == -720)
+        return -1;
+
+    x = H0 * cos(pitch) * cos(roll) - DOG_BODY_LEN * sin(pitch) - DOG_BODY_WEIGHT * cos(pitch) * sin(roll);
+    y = DOG_BODY_WEIGHT * cos(roll) * cos(yaw) - DOG_BODY_WEIGHT + H0 * cos(yaw) * sin(roll) - DOG_BODY_LEN * cos(pitch) * sin(yaw) + DOG_BODY_WEIGHT * sin(pitch) * sin(roll) * sin(yaw) - H0 * cos(roll) * sin(pitch) * sin(yaw);
+    y = y - DOG_LEG_D2;
+    z = DOG_BODY_LEN * cos(pitch) * cos(yaw) - DOG_BODY_LEN + DOG_BODY_WEIGHT * cos(roll) * sin(yaw) + H0 * sin(roll) * sin(yaw) + H0 * cos(roll) * cos(yaw) * sin(pitch) - DOG_BODY_WEIGHT * cos(yaw) * sin(pitch) * sin(roll);
+    if (_one_leg_invkinematics_1(x, y, z, thteta4) == -720)
+        return -1;
+
+    return 0;
+}

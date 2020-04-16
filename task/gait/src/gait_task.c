@@ -90,6 +90,7 @@ void xGaitTask()
     uint32_t t;
     float euler_angles[3];
     unsigned char ps2_data[9];
+    double pitch_out, roll_out;
     while (1)
     {
         xQueueReceive(AttitudeQueue, euler_angles, 0);
@@ -101,8 +102,9 @@ void xGaitTask()
         t = xTaskGetTickCount();
         if (ps2_data[3] == 255)
         {
-            stand(euler_angles[0], euler_angles[1], euler_angles[2], theta);
-            //go_mark(t, 1000, theta);
+            pitch_out = 1.0 * (0 - euler_angles[1]);
+            roll_out = 1.0 * (0 - euler_angles[0]);
+            stand((pitch_out / 180.0) * PI, (roll_out / 180.0) * PI, (0.0 / 180.0) * PI, theta);
         }
         else if (ps2_data[3] == 239)
         {

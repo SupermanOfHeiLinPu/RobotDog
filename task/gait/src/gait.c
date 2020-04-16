@@ -223,10 +223,11 @@ int mark_time(double t, double T, double H, double E, double theta[12], int dir)
  */
 int stand(double pitch, double roll, double yaw, double theta[12])
 {
-    //double x, y, z;
-    //double theta1[3], theta2[3], theta3[3], theta4[3];
-    yaw = 0;
+    double x, y, z;
+    double theta1[3], theta2[3], theta3[3], theta4[3];
 
+    _body_attitude_invkinematics(theta1, theta2, theta3, theta4, pitch, roll, yaw, 80);
+    /*
     theta[0] = _theta_0_2driver(90);
     theta[1] = _theta_1_2driver(90);
     theta[2] = _theta_2_2driver(90);
@@ -239,18 +240,21 @@ int stand(double pitch, double roll, double yaw, double theta[12])
     theta[9] = _theta_9_2driver(0);
     theta[10] = _theta_10_2driver(0);
     theta[11] = _theta_11_2driver(0);
-
-    //theta[0] = _theta_0_2driver(45);
-    //theta[1] = _theta_1_2driver(45);
-    //theta[2] = _theta_2_2driver(45);
-    //theta[3] = _theta_3_2driver(45);
-    //theta[4] = _theta_4_2driver(0);
-    //theta[5] = _theta_5_2driver(0);
-    //theta[6] = _theta_6_2driver(0);
-    //theta[7] = _theta_7_2driver(0);
-    //theta[8] = _theta_8_2driver(0);
-    //theta[9] = _theta_9_2driver(0);
-    //theta[10] = _theta_10_2driver(0);
-    //theta[11] = _theta_11_2driver(0);
+    */
+    //将关节空间转化到驱动空间
+    theta[0] = _theta_0_2driver(180.0 * (theta1[2] / PI));
+    theta[1] = _theta_1_2driver(180.0 * (theta2[2] / PI));
+    theta[2] = _theta_2_2driver(180.0 * (theta3[2] / PI));
+    theta[3] = _theta_3_2driver(180.0 * (theta4[2] / PI));
+    theta[4] = _theta_4_2driver(180.0 * (theta1[1] / PI));
+    theta[5] = _theta_5_2driver(180.0 * (theta2[1] / PI));
+    theta[6] = _theta_6_2driver(180.0 * (theta3[1] / PI));
+    theta[7] = _theta_7_2driver(180.0 * (theta4[1] / PI));
+    theta[8] = _theta_8_2driver(180.0 * (theta1[0] / PI));
+    theta[9] = _theta_9_2driver(180.0 * (theta2[0] / PI));
+    theta[10] = _theta_10_2driver(180.0 * (theta3[0] / PI));
+    theta[11] = _theta_11_2driver(180.0 * (theta4[0] / PI));
+    if (theta[0] == -720 || theta[1] == -720 || theta[2] == -720 || theta[3] == -720 || theta[4] == -720 || theta[5] == -720 || theta[6] == -720 || theta[7] == -720 || theta[8] == -720 || theta[9] == -720 || theta[10] == -720 || theta[11] == -720)
+        return -2;
     return 0;
 }
