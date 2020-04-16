@@ -11,7 +11,7 @@
 #define DOG_LEG_D1 (0.0)
 #define DOG_LEG_D2 (27.0)
 #define DOG_LEG_D3 (0.0)
-
+//身体参数
 #define DOG_BODY_LEN (182.5)
 #define DOG_BODY_WEIGHT (76.4)
 

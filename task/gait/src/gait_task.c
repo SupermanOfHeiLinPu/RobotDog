@@ -100,13 +100,7 @@ void xGaitTask()
         _PS2_Read_Data(ps2_data);
         //printf("%d\n", ps2_data[3]);
         t = xTaskGetTickCount();
-        if (ps2_data[3] == 255)
-        {
-            pitch_out = 1.0 * (0 - euler_angles[1]);
-            roll_out = 1.0 * (0 - euler_angles[0]);
-            stand((pitch_out / 180.0) * PI, (roll_out / 180.0) * PI, (0.0 / 180.0) * PI, theta);
-        }
-        else if (ps2_data[3] == 239)
+        if (ps2_data[3] == 239)
         {
             go_straight(t, 1000, theta);
         }
@@ -122,7 +116,12 @@ void xGaitTask()
         {
             go_back(t, 1000, theta);
         }
-
+        else
+        {
+            pitch_out = 1.0 * (0 - euler_angles[1]);
+            roll_out = 1.0 * (0 - euler_angles[0]);
+            stand((pitch_out / 180.0) * PI, (roll_out / 180.0) * PI, (0.0 / 180.0) * PI, theta);
+        }
         xQueueSend(GaitQueue, theta, portMAX_DELAY);
     }
 }
