@@ -5,10 +5,11 @@
 !/task
 !/task/**
 !/Src
-!/Src/*
+!/Src/**
 !/Inc
-!/Inc/*
+!/Inc/**
 !.gitignore
 !Makefile
+!/matlab
 !/matlab/**
 !.gitignore
