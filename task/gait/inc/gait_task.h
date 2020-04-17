@@ -7,7 +7,6 @@
 #include "queue.h"
 
 #include "attitude_task.h"
-#include "ps2_control.h"
 
 #define GAIT_QUEUE_LEN (8)
 

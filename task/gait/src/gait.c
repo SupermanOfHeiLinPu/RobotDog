@@ -51,32 +51,40 @@ int tort_cycloid(double t, double T, double H, double E, double theta[12], int d
         a = -1;
     }
     //椭圆方程
-    x = max_x - H * sa;
-    z = a * E * ca - 30;
+    x = max_x - H * sa - 5;
+    z = a * E * ca - 10;
     if (x > max_x)
     {
         x = max_x;
     }
     if (_one_leg_invkinematics_1(x, y, z, theta1) == -720)
         return -1;
+    x = x + 5;
+    z = z - 15;
+    if (_one_leg_invkinematics_1(x, y, z, theta4) == -720)
+        return -1;
     //腿四和腿一动作一样
-    theta4[0] = theta1[0];
-    theta4[1] = theta1[1];
-    theta4[2] = theta1[2];
+    //theta4[0] = theta1[0];
+    //theta4[1] = theta1[1];
+    //theta4[2] = theta1[2];
     //腿1,4和腿2,3有半个周期差
     //alpha = alpha + PI;
-    x = max_x - H * (-sa);
-    z = a * E * (-ca) - 30;
+    x = max_x - H * (-sa) - 5;
+    z = a * E * (-ca) - 10;
     if (x > max_x)
     {
         x = max_x;
     }
     if (_one_leg_invkinematics_1(x, y, z, theta2) == -720)
         return -1;
+    x = x + 5;
+    z = z - 15;
+    if (_one_leg_invkinematics_1(x, y, z, theta3) == -720)
+        return -1;
     //腿三和腿一动作一样
-    theta3[0] = theta2[0];
-    theta3[1] = theta2[1];
-    theta3[2] = theta2[2];
+    //theta3[0] = theta2[0];
+    //theta3[1] = theta2[1];
+    //theta3[2] = theta2[2];
     //将关节空间转化到驱动空间
     theta[0] = _theta_0_2driver(180.0 * (theta1[2] / PI));
     theta[1] = _theta_1_2driver(180.0 * (theta2[2] / PI));
@@ -215,18 +223,19 @@ int mark_time(double t, double T, double H, double E, double theta[12], int dir)
 /*
  *功能：站立
  *输入：
+    pitch,roll,yaw:欧拉角
     theta：驱动空间数据的地址
  *输出：
     theta：驱动空间
- *描述：
-    每个关节设为固定值
+ *返回值：成功返回0
+    
  */
 int stand(double pitch, double roll, double yaw, double theta[12])
 {
-    double x, y, z;
     double theta1[3], theta2[3], theta3[3], theta4[3];
 
-    _body_attitude_invkinematics(theta1, theta2, theta3, theta4, pitch, roll, yaw, 80);
+    if (_body_attitude_invkinematics(theta1, theta2, theta3, theta4, pitch, roll, yaw, 80))
+        return -1;
     //将关节空间转化到驱动空间
     theta[0] = _theta_0_2driver(180.0 * (theta1[2] / PI));
     theta[1] = _theta_1_2driver(180.0 * (theta2[2] / PI));

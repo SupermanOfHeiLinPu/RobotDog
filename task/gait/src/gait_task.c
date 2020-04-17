@@ -5,9 +5,9 @@ TaskHandle_t GaitTaskHandle;
 QueueHandle_t GaitQueue;
 
 /*
- *站立姿态PID结构体定义
+ *站立姿态PID结构体定义，并初始化
  */
-struct _stand_PID
+static struct _stand_PID
 {
     double Kp;
     double Ki;
@@ -18,11 +18,7 @@ struct _stand_PID
     double rek_1;
     double perr_integral;
     double rerr_integral;
-};
-/*
- *初始化PID各项参数
- */
-struct _stand_PID stand_PID = {
+} stand_PID = {
     .Kp = 0.5,
     .Ki = 0.00001,
     .Kd = 1,
@@ -40,7 +36,7 @@ struct _stand_PID stand_PID = {
 *输出：
     theta：驱动空间
  */
-int go_straight(uint32_t current_time, double T, double theta[12])
+static int go_straight(uint32_t current_time, double T, double theta[12])
 {
     uint32_t deltaT;
     static uint32_t lastT;
@@ -63,7 +59,7 @@ int go_straight(uint32_t current_time, double T, double theta[12])
 *输出：
     theta：驱动空间
 */
-int go_right(uint32_t current_time, double T, double theta[12])
+static int go_right(uint32_t current_time, double T, double theta[12])
 {
     uint32_t deltaT;
     static uint32_t lastT;
@@ -86,7 +82,7 @@ int go_right(uint32_t current_time, double T, double theta[12])
  *输出：
     theta：驱动空间
  */
-int go_left(uint32_t current_time, double T, double theta[12])
+static int go_left(uint32_t current_time, double T, double theta[12])
 {
     uint32_t deltaT;
     static uint32_t lastT;
@@ -109,7 +105,7 @@ int go_left(uint32_t current_time, double T, double theta[12])
 *输出：
     theta：驱动空间
 */
-int go_back(uint32_t current_time, double T, double theta[12])
+static int go_back(uint32_t current_time, double T, double theta[12])
 {
     uint32_t deltaT;
     static uint32_t lastT;
@@ -131,7 +127,7 @@ int go_back(uint32_t current_time, double T, double theta[12])
 *输出：
     theta：驱动空间
 */
-int stand_control(double current_pitch, double current_roll, double aimp, double aimr, double theta[12])
+static int stand_control(double current_pitch, double current_roll, double aimp, double aimr, double theta[12])
 {
     double pitch_out, roll_out;
     stand_PID.pek = aimp - current_pitch;
@@ -142,8 +138,7 @@ int stand_control(double current_pitch, double current_roll, double aimp, double
     roll_out = stand_PID.Kp * stand_PID.rek + stand_PID.Kd * (stand_PID.rek - stand_PID.rek_1) + stand_PID.Ki * stand_PID.rerr_integral;
     stand_PID.pek_1 = stand_PID.pek;
     stand_PID.rek_1 = stand_PID.rek;
-    stand((pitch_out / 180.0) * PI, (roll_out / 180.0) * PI, 0, theta);
-    return 0;
+    return stand((pitch_out / 180.0) * PI, (roll_out / 180.0) * PI, 0, theta);
 }
 
 /*
@@ -155,33 +150,41 @@ void xGaitTask()
     double theta[12];
     uint32_t t;
     float euler_angles[3];
-    unsigned char ps2_data[9];
+    unsigned char dog_cmd;
     while (1)
     {
-        xQueueReceive(AttitudeQueue, euler_angles, 0);
-        /*printf("pitch:%f\n", euler_angles[0]);
-        printf("yaw:%f\n", euler_angles[2]);
-        printf("roll:%f\n", euler_angles[1]);*/
-        _PS2_Read_Data(ps2_data);
-        //printf("%d\n", ps2_data[3]);
+        //接收姿态队列的欧拉角
+        xQueueReceive(AttitudeQueue, euler_angles, portMAX_DELAY);
+        /*
+        PH4为低位,PH5为高位,则
+        00:45低
+        01:5低4高
+        10:5高4低
+        11:45高
+        */
+        dog_cmd = HAL_GPIO_ReadPin(GPIOH, GPIO_PIN_5);
+        dog_cmd = dog_cmd << 1;
+        dog_cmd = dog_cmd + HAL_GPIO_ReadPin(GPIOH, GPIO_PIN_4);
+        //获取当前系统节拍数
         t = xTaskGetTickCount();
-        if (ps2_data[3] == 239)
+        //根据控制指令做动作
+        if (dog_cmd == 0)
         {
-            go_straight(t, 1000, theta);
+            go_straight(t, 700, theta);
         }
-        else if (ps2_data[3] == 127)
+        else if (dog_cmd == 1)
         {
-            go_left(t, 1000, theta);
+            go_left(t, 700, theta);
         }
-        else if (ps2_data[3] == 223)
+        else if (dog_cmd == 2)
         {
-            go_right(t, 1000, theta);
+            go_right(t, 700, theta);
         }
-        else if (ps2_data[3] == 191)
+        else if (dog_cmd == 4)
         {
-            go_back(t, 1000, theta);
+            go_back(t, 700, theta);
         }
-        else
+        else if (dog_cmd == 3)
         {
             //由于陀螺仪安装的位置，俯仰角和横滚角反过来
             stand_control(euler_angles[1], euler_angles[0], 0, 0, theta);
@@ -197,7 +200,7 @@ BaseType_t xGaitTaskCreat()
                           (const char *)"GaitTask",
                           (uint16_t)256,
                           (void *)NULL,
-                          (UBaseType_t)5,
+                          (UBaseType_t)6,
                           (TaskHandle_t *)GaitTaskHandle);
     return xReturn;
 }

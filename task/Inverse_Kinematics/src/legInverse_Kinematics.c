@@ -178,7 +178,7 @@ int _one_leg_invkinematics_4(double px, double py, double pz, double theta[3])
     H0：高度
  *输出：
     theta1~4：四条腿的关节空间
-*返回值：0
+*返回值：成功返回0
  */
 int _body_attitude_invkinematics(double thteta1[3], double thteta2[3],
                                  double thteta3[3], double thteta4[3],
