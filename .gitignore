@@ -11,3 +11,4 @@
 !.gitignore
 !Makefile
 !/matlab/**
+!.gitignore
