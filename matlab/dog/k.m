@@ -14,12 +14,14 @@ a3 = DOG_LEG_A3;
 LL(1) = Link([0 0 0 pi/2 0]);
 LL(2) = Link([0 27 55 0 0]);
 LL(3)=Link([0 0 60 0 0]);
-E = 40;
-H = 20;
-MAX_X = 85;
+E = 45;
+H = 25;
+MAX_X = 80;
 otherleg = SerialLink(LL);
 alpha = (0:0.1:2*pi);
+
 x = MAX_X - H.*sin(alpha);
+%x = MAX_X - H.*(0.5 - 0.5.*cos(alpha));
 for j=1:63
 x(j) = MAX_X - H.*sin(alpha(j));
 if x(j)>MAX_X
@@ -28,7 +30,8 @@ end
 end
 
 z = -E .* cos(alpha) - 25;
-y = -27 + (E-10) * cos(alpha);
+%z = E.*(alpha./(2*pi) - (1/(2*pi)).* sin(alpha));
+y = -27 + E.*(alpha./(2*pi) - (1/(2*pi)).* sin(alpha))*0;
 
 px = x;
 py = y;

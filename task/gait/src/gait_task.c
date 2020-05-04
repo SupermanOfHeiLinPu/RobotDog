@@ -36,7 +36,7 @@ static struct _stand_PID
 *输出：
     theta：驱动空间
  */
-static int go_straight(uint32_t current_time, double T, double theta[12])
+static int go_straight(uint32_t current_time, double T, double pitch, double roll, double theta[12], int is_walk)
 {
     uint32_t deltaT;
     static uint32_t lastT;
@@ -46,7 +46,14 @@ static int go_straight(uint32_t current_time, double T, double theta[12])
         lastT = current_time;
         deltaT = 0;
     }
-    tort_cycloid(deltaT, T, 20, 40, theta, 0);
+    if (is_walk)
+    {
+        walk_cycloid(deltaT, T, 25, 45, pitch, roll, theta, 0);
+    }
+    else
+    {
+        tort_cycloid(deltaT, T, 25, 45, pitch, roll, theta, 0);
+    }
     return 0;
 }
 
@@ -59,7 +66,7 @@ static int go_straight(uint32_t current_time, double T, double theta[12])
 *输出：
     theta：驱动空间
 */
-static int go_right(uint32_t current_time, double T, double theta[12])
+static int go_right(uint32_t current_time, double T, double pitch, double roll, double theta[12])
 {
     uint32_t deltaT;
     static uint32_t lastT;
@@ -69,7 +76,7 @@ static int go_right(uint32_t current_time, double T, double theta[12])
         lastT = current_time;
         deltaT = 0;
     }
-    tort_cycloid(deltaT, T, 15, 30, theta, 1);
+    tort_cycloid(deltaT, T, 25, 45, pitch, roll, theta, 1);
     return 0;
 }
 
@@ -82,7 +89,7 @@ static int go_right(uint32_t current_time, double T, double theta[12])
  *输出：
     theta：驱动空间
  */
-static int go_left(uint32_t current_time, double T, double theta[12])
+static int go_left(uint32_t current_time, double T, double pitch, double roll, double theta[12])
 {
     uint32_t deltaT;
     static uint32_t lastT;
@@ -92,7 +99,7 @@ static int go_left(uint32_t current_time, double T, double theta[12])
         lastT = current_time;
         deltaT = 0;
     }
-    tort_cycloid(deltaT, T, 15, 30, theta, 2);
+    tort_cycloid(deltaT, T, 25, 45, pitch, roll, theta, 2);
     return 0;
 }
 
@@ -105,7 +112,7 @@ static int go_left(uint32_t current_time, double T, double theta[12])
 *输出：
     theta：驱动空间
 */
-static int go_back(uint32_t current_time, double T, double theta[12])
+static int go_back(uint32_t current_time, double T, double pitch, double roll, double theta[12])
 {
     uint32_t deltaT;
     static uint32_t lastT;
@@ -115,7 +122,7 @@ static int go_back(uint32_t current_time, double T, double theta[12])
         lastT = current_time;
         deltaT = 0;
     }
-    tort_cycloid(deltaT, T, 20, 50, theta, 3);
+    tort_cycloid(deltaT, T, 25, 45, pitch, roll, theta, 3);
     return 0;
 }
 /*
@@ -170,19 +177,20 @@ void xGaitTask()
         //根据控制指令做动作
         if (dog_cmd == 0)
         {
-            go_straight(t, 700, theta);
+            go_straight(t, 300, euler_angles[1], euler_angles[0], theta, 0);
         }
         else if (dog_cmd == 1)
         {
-            go_left(t, 700, theta);
+            //go_left(t, 700, theta);
+            go_straight(t, 300, euler_angles[1], euler_angles[0], theta, 0);
         }
         else if (dog_cmd == 2)
         {
-            go_right(t, 700, theta);
+            go_right(t, 500, euler_angles[1], euler_angles[0], theta);
         }
         else if (dog_cmd == 4)
         {
-            go_back(t, 700, theta);
+            go_back(t, 700, euler_angles[1], euler_angles[0], theta);
         }
         else if (dog_cmd == 3)
         {
