@@ -196,6 +196,8 @@ void xGaitTask()
         {
             //由于陀螺仪安装的位置，俯仰角和横滚角反过来
             stand_control(euler_angles[1], euler_angles[0], 0, 0, theta);
+            printf("p%f\n", euler_angles[1]);
+            printf("r%f\n", euler_angles[0]);
         }
         xQueueSend(GaitQueue, theta, portMAX_DELAY);
     }

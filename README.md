@@ -49,4 +49,4 @@
     This is free software; see the source for copying conditions.  There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
 
 ## 备注：
-    使用CUBEMX生成代码；大致完成，预计把ps2手柄换成其他控制器(ps2手柄控制有点问题)  
+    使用CUBEMX生成代码；大致完成，等待换个新模型
