@@ -67,17 +67,17 @@ static void AttitudeTsak()
             /*printf("q0:%lf\n", attitude_self->quat[0]);
             printf("q1:%lf\n", attitude_self->quat[1]);
             printf("q2:%lf\n", attitude_self->quat[2]);
-            printf("q3:%lf\n", attitude_self->quat[3]);
-            printf("pitch:%lf\n", attitude_self->pitch);
-            printf("yaw:%lf\n", attitude_self->yaw);
-            printf("roll:%lf\n", attitude_self->roll);*/
+            printf("q3:%lf\n", attitude_self->quat[3]);*/
+            printf("p:%d\n", (int)attitude_self->pitch);
+            printf("y:%d\n", (int)attitude_self->yaw);
+            printf("r:%d\n", (int)attitude_self->roll);
             HAL_GPIO_WritePin(GPIOD, GPIO_PIN_11, GPIO_PIN_SET);
         }
         else
         {
             HAL_GPIO_WritePin(GPIOD, GPIO_PIN_11, GPIO_PIN_RESET);
         }
-        }
+    }
     attitude_self_delete(attitude_self);
 }
 
