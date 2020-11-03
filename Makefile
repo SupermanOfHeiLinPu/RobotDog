@@ -46,6 +46,8 @@ task/pca9685/src/pca_drive_task.c \
 task/pca9685/src/pca9685.c \
 task/pca9685/src/theta2dev.c \
 task/printf_redefine/printf_redefine.c \
+task/ebot_motor/motor_task.c \
+Src/tim.c \
 Src/main.c \
 Src/gpio.c \
 Src/freertos.c \
@@ -148,6 +150,7 @@ C_INCLUDES =  \
 -Itask/Inverse_Kinematics/inc \
 -Itask/Kinematics/inc \
 -Itask/pca9685/inc \
+-Itask/ebot_motor \
 -IInc \
 -IDrivers/STM32F7xx_HAL_Driver/Inc \
 -IDrivers/STM32F7xx_HAL_Driver/Inc/Legacy \
@@ -156,7 +159,6 @@ C_INCLUDES =  \
 -IMiddlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 \
 -IDrivers/CMSIS/Device/ST/STM32F7xx/Include \
 -IDrivers/CMSIS/Include \
--IDrivers/CMSIS/Include
 
 
 # compile gcc flags

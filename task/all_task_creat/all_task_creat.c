@@ -8,10 +8,11 @@ void all_task_creat()
     taskENTER_CRITICAL();
     //创建任务
     AttitudeQueueCreat();
-    GaitQueueCreat();
+    //GaitQueueCreat();
     xAttitudeTsakCreat();
-    xGaitTaskCreat();
-    xServoDriverTaskCreat();
+    xMotorTaskCreat();
+    //xGaitTaskCreat();
+    //xServoDriverTaskCreat();
     //删除自己
     vTaskDelete(AllTaskCreatHandle);
     //退出临界区

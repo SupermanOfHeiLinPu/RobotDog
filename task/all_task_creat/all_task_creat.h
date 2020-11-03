@@ -7,7 +7,7 @@
 #include "attitude_task.h"
 #include "pca_drive_task.h"
 #include "gait_task.h"
-
+#include "motor_task.h"
 extern int xAllTaskCreat();
 
 #endif
